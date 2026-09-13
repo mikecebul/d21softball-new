@@ -128,14 +128,14 @@ function RegisterPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <p className="font-condensed text-xs font-semibold tracking-[0.22em] text-primary uppercase">
-        Team registration — 2026 season
+        Tournament registration — {SEASON_YEAR} season
       </p>
       <h1 className="font-display mt-2 text-4xl font-semibold tracking-wide uppercase sm:text-5xl">
-        Register your team
+        Register for a tournament
       </h1>
       <p className="text-muted-foreground mt-3 max-w-2xl leading-relaxed">
-        No account, no dashboard. Four quick steps, then secure payment with Stripe.
-        You'll get a confirmation and receipt by email.
+        No account, no dashboard. Pick your tournament, tell us about your team,
+        then secure payment with Stripe. You'll get a confirmation and receipt by email.
       </p>
 
       {/* stepper */}
@@ -372,7 +372,7 @@ function RegisterPage() {
             )}
             <Separator className="my-4" />
             <ul className="text-muted-foreground space-y-1.5 text-xs leading-relaxed">
-              <li>• 4-game guarantee, 5-team round robin</li>
+              <li>• 5-team round robin</li>
               <li>• Brackets posted on the tournament page</li>
               <li>• Receipt + confirmation by email</li>
             </ul>

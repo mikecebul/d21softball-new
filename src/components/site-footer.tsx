@@ -62,7 +62,7 @@ export function SiteFooter() {
           </p>
           <div className="mt-3 grid gap-2 text-sm">
             <Link to="/tournaments" className="text-white/75 hover:text-white">2026 Tournaments</Link>
-            <Link to="/register" className="text-white/75 hover:text-white">Register a team</Link>
+            <Link to="/register" className="text-white/75 hover:text-white">Register for a tournament</Link>
             <Link to="/archives" className="text-white/75 hover:text-white">Archives & results</Link>
             <Link to="/local-leagues" className="text-white/75 hover:text-white">Local leagues</Link>
             <Link to="/hall-of-fame" className="text-white/75 hover:text-white">Hall of Fame</Link>

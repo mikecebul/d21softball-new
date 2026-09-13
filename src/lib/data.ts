@@ -125,10 +125,32 @@ export function statusLabel(s: TournamentStatus) {
     case "filling":
       return "Filling fast";
     case "full":
-      return "Waitlist";
+      return "Tournament full";
     case "closed":
       return "Registration closed";
     case "completed":
       return "Completed";
   }
+}
+
+export function isCompleted(t: ApiTournament, now = new Date()): boolean {
+  return new Date(t.date_to).getTime() < now.getTime();
+}
+
+/** Tournaments whose play window has not ended, soonest first. */
+export function upcomingTournaments(list: ApiTournament[], now = new Date()): ApiTournament[] {
+  return list
+    .filter((t) => !isCompleted(t, now))
+    .sort((a, b) => new Date(a.date_from).getTime() - new Date(b.date_from).getTime());
+}
+
+/** Most recently finished tournament (by end date). */
+export function latestCompleted(list: ApiTournament[], now = new Date()): ApiTournament | undefined {
+  return list
+    .filter((t) => isCompleted(t, now))
+    .sort((a, b) => new Date(b.date_to).getTime() - new Date(a.date_to).getTime())[0];
+}
+
+export function totalTeams(list: ApiTournament[]): number {
+  return list.reduce((sum, t) => sum + t.teams.length, 0);
 }

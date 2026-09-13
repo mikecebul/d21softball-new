@@ -35,30 +35,46 @@ const nav = [
   { to: "/rules", label: "Rules", icon: ClipboardList },
 ]
 
+const tickerItems = [
+  { text: "District 21 Softball — Petoskey, Michigan" },
+  { text: "Scott Kelly, District Commissioner — (231) 547-1144 — scott@d21softball.org", href: "mailto:scott@d21softball.org" },
+  { text: "Follow scores & scorebooks — D21 Softball at Petoskey on Facebook", href: "https://www.facebook.com/groups/127657947314063" },
+  { text: "Waterfront Park, Petoskey — Little Traverse Bay behind the outfield fence" },
+]
+
+function TickerRun({ ariaHidden = false }: { ariaHidden?: boolean }) {
+  return (
+    <div className="flex w-max shrink-0" aria-hidden={ariaHidden || undefined}>
+      {tickerItems.map((item, i) => (
+        <span key={i} className="flex items-center">
+          {item.href ? (
+            <a
+              href={item.href}
+              target={item.href.startsWith("http") ? "_blank" : undefined}
+              rel={item.href.startsWith("http") ? "noreferrer" : undefined}
+              className="transition hover:text-[var(--gold)]"
+            >
+              {item.text}
+            </a>
+          ) : (
+            item.text
+          )}
+          <span className="px-6 text-white/30">◆</span>
+        </span>
+      ))}
+    </div>
+  )
+}
+
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
   return (
     <header className="sticky top-0 z-40">
-      {/* top utility bar */}
-      <div className="bg-[var(--navy-deep)] text-white/85">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-1.5 text-xs">
-          <p className="font-condensed tracking-[0.18em] uppercase opacity-80">
-            District 21 Softball — Petoskey, Michigan
-          </p>
-          <div className="hidden items-center gap-4 sm:flex">
-            <a
-              href="mailto:scott@d21softball.org"
-              className="inline-flex items-center gap-1.5 hover:text-white"
-            >
-              <Mail className="size-3.5" /> scott@d21softball.org
-            </a>
-            <a
-              href="tel:+12315471144"
-              className="inline-flex items-center gap-1.5 hover:text-white"
-            >
-              <Phone className="size-3.5" /> (231) 547-1144
-            </a>
-          </div>
+      {/* ticker */}
+      <div className="group overflow-hidden bg-[var(--navy-deep)] text-white/85">
+        <div className="flex w-max animate-ticker font-condensed text-xs tracking-[0.18em] uppercase group-hover:[animation-play-state:paused]">
+          <TickerRun />
+          <TickerRun ariaHidden />
         </div>
       </div>
       {/* main bar */}
@@ -89,7 +105,7 @@ export function SiteHeader() {
               </Link>
             ))}
             <Link to="/register">
-              <Button className="ml-2 font-semibold">Register a team</Button>
+              <Button className="ml-2 font-semibold">Register for a tournament</Button>
             </Link>
           </nav>
           <button
@@ -152,7 +168,7 @@ export function SiteHeader() {
           <DrawerFooter className="gap-3">
             <Link to="/register" onClick={() => setOpen(false)}>
               <Button size="lg" className="w-full font-semibold">
-                Register a team
+                Register for a tournament
               </Button>
             </Link>
             <div className="flex flex-col gap-1.5 text-xs text-muted-foreground">

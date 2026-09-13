@@ -15,7 +15,7 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "District 21 Softball: men's fastpitch tournaments at Waterfront Park in Petoskey, Michigan. Register your team, browse brackets and archives.",
+          "District 21 Softball: men's fastpitch tournaments at Waterfront Park in Petoskey, Michigan. Register for a tournament, browse brackets and archives.",
       },
     ],
     links: [{ rel: "stylesheet", href: appCss }],

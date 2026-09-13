@@ -9,7 +9,7 @@ export const Route = createFileRoute("/umpires")({ component: UmpiresPage });
 const steps = [
   { t: "Register with USA Softball", d: "Complete the annual umpire registration and background check through USA Softball of Michigan." },
   { t: "Get assigned", d: "Email the district with your availability for June–August weekends — Friday nights through Sunday finals." },
-  { t: "Work the waterfront", d: "Five-team round robins, four-game guarantees, championship Sundays on the bay." },
+  { t: "Work the waterfront", d: "Five-team round robins and championship Sundays on the bay." },
 ];
 
 function UmpiresPage() {

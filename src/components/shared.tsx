@@ -2,7 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { formatDateRange, spotsLeftFor, spotsTotalFor, statusLabel, tournamentStatus, type TournamentStatus } from "@/lib/data";
+import { formatDateRange, spotsLeftFor, spotsTotalFor, statusLabel, tournamentStatus } from "@/lib/data";
+import type { TournamentStatus } from "@/lib/data";
 import type { ApiTournament } from "@/lib/tournaments";
 import { CalendarDays, MapPin, Users, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -21,6 +22,7 @@ export function StatusBadge({ status }: { status: TournamentStatus }) {
 
 export function TournamentCard({ t }: { t: ApiTournament }) {
   const status = tournamentStatus(t);
+  const completed = status === "completed";
   const left = spotsLeftFor(t);
   const total = spotsTotalFor(t);
   return (
@@ -46,24 +48,43 @@ export function TournamentCard({ t }: { t: ApiTournament }) {
         </p>
       </CardHeader>
       <CardContent className="flex items-center justify-between text-sm">
-        <span className="inline-flex items-center gap-1.5">
-          <Users className="size-4" /> {left} of {total} spots left
-        </span>
+        {completed ? (
+          <span className="text-muted-foreground">{t.teams.length} teams competed</span>
+        ) : (
+          <span className="inline-flex items-center gap-1.5">
+            <Users className="size-4" /> {left} of {total} spots left
+          </span>
+        )}
         <span className="font-display text-xl font-semibold">{t.price ? `$${t.price}` : "TBD"}</span>
       </CardContent>
       <CardFooter className="mt-auto flex gap-2">
-        <Link to="/tournaments/$slug" params={{ slug: t.slug }} className="flex-1">
-          <Button variant="outline" className="w-full">Details</Button>
-        </Link>
-        <Link
-          to="/register"
-          search={{ tournament: t.slug }}
-          className="flex-1"
-        >
-          <Button className="w-full" disabled={status === "completed" || status === "closed"}>
-            Register <ArrowRight className="size-4" />
-          </Button>
-        </Link>
+        {completed ? (
+          <Link
+            to="/tournaments/$slug"
+            params={{ slug: t.slug }}
+            className="flex-1"
+          >
+            <Button className="w-full">
+              {t.bracketResults || t.finalBracket ? "View results" : "Details"}{" "}
+              <ArrowRight className="size-4" />
+            </Button>
+          </Link>
+        ) : (
+          <>
+            <Link to="/tournaments/$slug" params={{ slug: t.slug }} className="flex-1">
+              <Button variant="outline" className="w-full">Details</Button>
+            </Link>
+            <Link
+              to="/register"
+              search={{ tournament: t.slug }}
+              className="flex-1"
+            >
+              <Button className="w-full" disabled={status === "closed" || status === "full"}>
+                Register <ArrowRight className="size-4" />
+              </Button>
+            </Link>
+          </>
+        )}
       </CardFooter>
     </Card>
   );

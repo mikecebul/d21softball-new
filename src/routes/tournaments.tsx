@@ -17,7 +17,7 @@ function TournamentsPage() {
       <SectionHeading
         kicker={`Summer ${SEASON_YEAR}`}
         title="Tournaments"
-        lede="All tourneys are fast pitch at Waterfront Park, Petoskey MI. Five-team round robins, four-game guarantee, Friday night to Sunday championship."
+        lede="All tourneys are fast pitch at Waterfront Park, Petoskey MI — five-team round robins, Friday night to Sunday championship."
       />
       {tournaments.length === 0 ? (
         <p className="text-muted-foreground mt-8 text-sm">No tournaments posted for this season yet — check back soon.</p>

@@ -47,7 +47,11 @@ function TournamentDetailPage() {
           <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/75">
             <span className="inline-flex items-center gap-1.5"><CalendarDays className="size-4" /> {formatDateRange(t.date_from, t.date_to)}</span>
             <span className="inline-flex items-center gap-1.5"><MapPin className="size-4" /> {t.location}</span>
-            <span className="inline-flex items-center gap-1.5"><Users className="size-4" /> {left} of {total} spots left</span>
+            {status === "completed" ? (
+              <span className="inline-flex items-center gap-1.5"><Users className="size-4" /> {teams.length} teams competed</span>
+            ) : (
+              <span className="inline-flex items-center gap-1.5"><Users className="size-4" /> {left} of {total} spots left</span>
+            )}
           </div>
         </div>
       </div>
@@ -138,11 +142,15 @@ function TournamentDetailPage() {
             <dl className="grid gap-2 text-sm">
               <div className="flex justify-between"><dt className="text-muted-foreground">Dates</dt><dd className="font-medium">{formatDateRange(t.date_from, t.date_to)}</dd></div>
               <div className="flex justify-between"><dt className="text-muted-foreground">Class</dt><dd className="font-medium">{t.class}</dd></div>
-              <div className="flex justify-between"><dt className="text-muted-foreground">Spots left</dt><dd className="font-medium">{left} of {total}</dd></div>
+              {status === "completed" ? (
+                <div className="flex justify-between"><dt className="text-muted-foreground">Teams</dt><dd className="font-medium">{teams.length}</dd></div>
+              ) : (
+                <div className="flex justify-between"><dt className="text-muted-foreground">Spots left</dt><dd className="font-medium">{left} of {total}</dd></div>
+              )}
             </dl>
             <Link to="/register" search={{ tournament: t.slug }} className="mt-6 block">
               <Button size="lg" className="w-full font-semibold" disabled={status === "completed" || status === "closed" || status === "full"}>
-                {status === "completed" ? "Tournament complete" : status === "full" ? "Join waitlist" : <>Register this team <ArrowRight className="size-4" /></>}
+                {status === "completed" ? "Tournament complete" : status === "full" ? "Tournament full" : <>Register for this tournament <ArrowRight className="size-4" /></>}
               </Button>
             </Link>
             <p className="text-muted-foreground mt-3 text-center text-xs">
