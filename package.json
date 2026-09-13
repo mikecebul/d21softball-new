@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev --port 3000",
+    "dev:stop": "lsof -ti :3000 | xargs kill 2>/dev/null || true",
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
