@@ -130,8 +130,12 @@ export function SiteHeader() {
                 key={n.to}
                 to={n.to}
                 onClick={() => setOpen(false)}
-                className="flex items-center gap-3 rounded-lg border-b border-foreground/8 px-2 py-2 last:border-0 hover:bg-muted data-[status=active]:border-transparent data-[status=active]:bg-[var(--sand)] data-[status=active]:shadow-[inset_4px_0_0_0_var(--ember)]"
+                className="group relative flex items-center gap-3 rounded-lg border-b border-foreground/8 py-2 pr-2 pl-3 last:border-0 hover:bg-muted data-[status=active]:border-transparent data-[status=active]:bg-[var(--sand)]"
               >
+                <span
+                  aria-hidden="true"
+                  className="absolute top-2 bottom-2 left-1 hidden w-1 rounded-full bg-[var(--ember)] group-data-[status=active]:block"
+                />
                 <span className="grid size-11 shrink-0 place-items-center rounded-lg bg-[var(--navy)] text-white">
                   <n.icon className="size-5" />
                 </span>
