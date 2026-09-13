@@ -8,59 +8,324 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root"
-import { Route as IndexRouteImport } from "./routes/index"
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as ArchivesRouteImport } from './routes/archives'
+import { Route as HallOfFameRouteImport } from './routes/hall-of-fame'
+import { Route as LocalLeaguesRouteImport } from './routes/local-leagues'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as RulesRouteImport } from './routes/rules'
+import { Route as TournamentsRouteImport } from './routes/tournaments'
+import { Route as UmpiresRouteImport } from './routes/umpires'
+import { Route as VisitRouteImport } from './routes/visit'
+import { Route as ArchivesSlugRouteImport } from './routes/archives.$slug'
+import { Route as RegisterSuccessRouteImport } from './routes/register.success'
+import { Route as TournamentsSlugRouteImport } from './routes/tournaments.$slug'
 
 const IndexRoute = IndexRouteImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ArchivesRoute = ArchivesRouteImport.update({
+  id: '/archives',
+  path: '/archives',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HallOfFameRoute = HallOfFameRouteImport.update({
+  id: '/hall-of-fame',
+  path: '/hall-of-fame',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LocalLeaguesRoute = LocalLeaguesRouteImport.update({
+  id: '/local-leagues',
+  path: '/local-leagues',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RulesRoute = RulesRouteImport.update({
+  id: '/rules',
+  path: '/rules',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TournamentsRoute = TournamentsRouteImport.update({
+  id: '/tournaments',
+  path: '/tournaments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UmpiresRoute = UmpiresRouteImport.update({
+  id: '/umpires',
+  path: '/umpires',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VisitRoute = VisitRouteImport.update({
+  id: '/visit',
+  path: '/visit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArchivesSlugRoute = ArchivesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ArchivesRoute,
+} as any)
+const RegisterSuccessRoute = RegisterSuccessRouteImport.update({
+  id: '/success',
+  path: '/success',
+  getParentRoute: () => RegisterRoute,
+} as any)
+const TournamentsSlugRoute = TournamentsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => TournamentsRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute
+  '/': typeof IndexRoute
+  '/archives': typeof ArchivesRouteWithChildren
+  '/hall-of-fame': typeof HallOfFameRoute
+  '/local-leagues': typeof LocalLeaguesRoute
+  '/register': typeof RegisterRouteWithChildren
+  '/rules': typeof RulesRoute
+  '/tournaments': typeof TournamentsRouteWithChildren
+  '/umpires': typeof UmpiresRoute
+  '/visit': typeof VisitRoute
+  '/archives/$slug': typeof ArchivesSlugRoute
+  '/register/success': typeof RegisterSuccessRoute
+  '/tournaments/$slug': typeof TournamentsSlugRoute
 }
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute
+  '/': typeof IndexRoute
+  '/archives': typeof ArchivesRouteWithChildren
+  '/hall-of-fame': typeof HallOfFameRoute
+  '/local-leagues': typeof LocalLeaguesRoute
+  '/register': typeof RegisterRouteWithChildren
+  '/rules': typeof RulesRoute
+  '/tournaments': typeof TournamentsRouteWithChildren
+  '/umpires': typeof UmpiresRoute
+  '/visit': typeof VisitRoute
+  '/archives/$slug': typeof ArchivesSlugRoute
+  '/register/success': typeof RegisterSuccessRoute
+  '/tournaments/$slug': typeof TournamentsSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  "/": typeof IndexRoute
+  '/': typeof IndexRoute
+  '/archives': typeof ArchivesRouteWithChildren
+  '/hall-of-fame': typeof HallOfFameRoute
+  '/local-leagues': typeof LocalLeaguesRoute
+  '/register': typeof RegisterRouteWithChildren
+  '/rules': typeof RulesRoute
+  '/tournaments': typeof TournamentsRouteWithChildren
+  '/umpires': typeof UmpiresRoute
+  '/visit': typeof VisitRoute
+  '/archives/$slug': typeof ArchivesSlugRoute
+  '/register/success': typeof RegisterSuccessRoute
+  '/tournaments/$slug': typeof TournamentsSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: "/"
+  fullPaths:
+    | '/'
+    | '/archives'
+    | '/hall-of-fame'
+    | '/local-leagues'
+    | '/register'
+    | '/rules'
+    | '/tournaments'
+    | '/umpires'
+    | '/visit'
+    | '/archives/$slug'
+    | '/register/success'
+    | '/tournaments/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: "/"
-  id: "__root__" | "/"
+  to:
+    | '/'
+    | '/archives'
+    | '/hall-of-fame'
+    | '/local-leagues'
+    | '/register'
+    | '/rules'
+    | '/tournaments'
+    | '/umpires'
+    | '/visit'
+    | '/archives/$slug'
+    | '/register/success'
+    | '/tournaments/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/archives'
+    | '/hall-of-fame'
+    | '/local-leagues'
+    | '/register'
+    | '/rules'
+    | '/tournaments'
+    | '/umpires'
+    | '/visit'
+    | '/archives/$slug'
+    | '/register/success'
+    | '/tournaments/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ArchivesRoute: typeof ArchivesRouteWithChildren
+  HallOfFameRoute: typeof HallOfFameRoute
+  LocalLeaguesRoute: typeof LocalLeaguesRoute
+  RegisterRoute: typeof RegisterRouteWithChildren
+  RulesRoute: typeof RulesRoute
+  TournamentsRoute: typeof TournamentsRouteWithChildren
+  UmpiresRoute: typeof UmpiresRoute
+  VisitRoute: typeof VisitRoute
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/"
-      path: "/"
-      fullPath: "/"
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/archives': {
+      id: '/archives'
+      path: '/archives'
+      fullPath: '/archives'
+      preLoaderRoute: typeof ArchivesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hall-of-fame': {
+      id: '/hall-of-fame'
+      path: '/hall-of-fame'
+      fullPath: '/hall-of-fame'
+      preLoaderRoute: typeof HallOfFameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/local-leagues': {
+      id: '/local-leagues'
+      path: '/local-leagues'
+      fullPath: '/local-leagues'
+      preLoaderRoute: typeof LocalLeaguesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rules': {
+      id: '/rules'
+      path: '/rules'
+      fullPath: '/rules'
+      preLoaderRoute: typeof RulesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tournaments': {
+      id: '/tournaments'
+      path: '/tournaments'
+      fullPath: '/tournaments'
+      preLoaderRoute: typeof TournamentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/umpires': {
+      id: '/umpires'
+      path: '/umpires'
+      fullPath: '/umpires'
+      preLoaderRoute: typeof UmpiresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/visit': {
+      id: '/visit'
+      path: '/visit'
+      fullPath: '/visit'
+      preLoaderRoute: typeof VisitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/archives/$slug': {
+      id: '/archives/$slug'
+      path: '/$slug'
+      fullPath: '/archives/$slug'
+      preLoaderRoute: typeof ArchivesSlugRouteImport
+      parentRoute: typeof ArchivesRoute
+    }
+    '/register/success': {
+      id: '/register/success'
+      path: '/success'
+      fullPath: '/register/success'
+      preLoaderRoute: typeof RegisterSuccessRouteImport
+      parentRoute: typeof RegisterRoute
+    }
+    '/tournaments/$slug': {
+      id: '/tournaments/$slug'
+      path: '/$slug'
+      fullPath: '/tournaments/$slug'
+      preLoaderRoute: typeof TournamentsSlugRouteImport
+      parentRoute: typeof TournamentsRoute
     }
   }
 }
 
+interface ArchivesRouteChildren {
+  ArchivesSlugRoute: typeof ArchivesSlugRoute
+}
+
+const ArchivesRouteChildren: ArchivesRouteChildren = {
+  ArchivesSlugRoute: ArchivesSlugRoute,
+}
+
+const ArchivesRouteWithChildren = ArchivesRoute._addFileChildren(
+  ArchivesRouteChildren,
+)
+
+interface RegisterRouteChildren {
+  RegisterSuccessRoute: typeof RegisterSuccessRoute
+}
+
+const RegisterRouteChildren: RegisterRouteChildren = {
+  RegisterSuccessRoute: RegisterSuccessRoute,
+}
+
+const RegisterRouteWithChildren = RegisterRoute._addFileChildren(
+  RegisterRouteChildren,
+)
+
+interface TournamentsRouteChildren {
+  TournamentsSlugRoute: typeof TournamentsSlugRoute
+}
+
+const TournamentsRouteChildren: TournamentsRouteChildren = {
+  TournamentsSlugRoute: TournamentsSlugRoute,
+}
+
+const TournamentsRouteWithChildren = TournamentsRoute._addFileChildren(
+  TournamentsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ArchivesRoute: ArchivesRouteWithChildren,
+  HallOfFameRoute: HallOfFameRoute,
+  LocalLeaguesRoute: LocalLeaguesRoute,
+  RegisterRoute: RegisterRouteWithChildren,
+  RulesRoute: RulesRoute,
+  TournamentsRoute: TournamentsRouteWithChildren,
+  UmpiresRoute: UmpiresRoute,
+  VisitRoute: VisitRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 
-import type { getRouter } from "./router.tsx"
-import type { createStart } from "@tanstack/react-start"
-declare module "@tanstack/react-start" {
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
   interface Register {
     ssr: true
     router: Awaited<ReturnType<typeof getRouter>>
