@@ -11,5 +11,10 @@ dist-ssr
 __unconfig*
 todos.json
 
+# design artifacts (mockup/generative tools)
+generated_images/
+mockup/
+output/
+
 # typescript
 *.tsbuildinfo
