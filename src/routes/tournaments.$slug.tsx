@@ -3,14 +3,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { StatusBadge } from "@/components/shared";
-import { formatDateRange, spotsLeftFor, spotsTotalFor, tournamentStatus } from "@/lib/data";
-import { apiUrl, fetchTournamentBySlug, parseApiTeam, tournamentDescriptionText } from "@/lib/tournaments";
-import { ArrowLeft, ArrowRight, CalendarDays, Check, Download, MapPin, Trophy, Users } from "lucide-react";
+import { StatusBadge, Breadcrumbs } from "@/components/shared";
+import { formatDateRange, SEASON_YEAR, archiveResults, spotsLeftFor, spotsTotalFor, tournamentStatus } from "@/lib/data";
+import { apiUrl, getTournamentBySlug, parseApiTeam, tournamentDescriptionText, tournamentYear } from "@/lib/tournaments";
+import { ArrowRight, CalendarDays, Check, Download, MapPin, Trophy, Users } from "lucide-react";
 
 export const Route = createFileRoute("/tournaments/$slug")({
   loader: async ({ params }) => {
-    const t = await fetchTournamentBySlug(params.slug);
+    const t = await getTournamentBySlug({ data: { slug: params.slug } });
     if (!t) throw notFound();
     return t;
   },
@@ -28,15 +28,41 @@ function TournamentDetailPage() {
   const description = tournamentDescriptionText(t);
   const bracketUrl = apiUrl(t.finalBracket?.url);
   const hasResults = Boolean(t.bracketResults || bracketUrl);
+  const year = tournamentYear(t);
+  const archived = archiveResults.find((a) => a.slug === t.slug);
 
   return (
     <div>
       {/* header band */}
       <div className="bg-[var(--navy-deep)] text-white">
-        <div className="texture-lines mx-auto max-w-6xl px-4 py-12">
-          <Link to="/tournaments" className="inline-flex items-center gap-1.5 text-sm text-white/70 hover:text-white">
-            <ArrowLeft className="size-4" /> All tournaments
-          </Link>
+        <div className="mx-auto max-w-6xl px-4 py-12">
+          <Breadcrumbs
+            tone="dark"
+            items={[
+              <Link
+                key="tournaments"
+                to="/tournaments"
+                activeOptions={{ exact: true }}
+                className="hover:text-white"
+              >
+                Tournaments
+              </Link>,
+              year === SEASON_YEAR ? (
+                <span key="year">{year}</span>
+              ) : (
+                <Link
+                  key="year"
+                  to="/tournaments"
+                  search={{ year }}
+                  activeOptions={{ exact: true }}
+                  className="hover:text-white"
+                >
+                  {year}
+                </Link>
+              ),
+              t.name,
+            ]}
+          />
           <div className="mt-4 flex flex-wrap items-center gap-3">
             <StatusBadge status={status} />
             <span className="font-condensed text-xs tracking-[0.2em] uppercase text-white/60">{t.class}</span>
@@ -83,9 +109,23 @@ function TournamentDetailPage() {
           )}
 
           {/* results */}
-          {hasResults && (
+          {(hasResults || archived?.champion) && (
             <div className="mt-10">
               <h2 className="font-display text-2xl font-semibold tracking-wide uppercase">Brackets & results</h2>
+              {archived?.champion && (
+                <p className="mt-4 flex items-start gap-2">
+                  <Trophy className="mt-0.5 size-5 shrink-0 text-primary" />
+                  <span>
+                    <span className="font-display text-xl font-semibold uppercase">{archived.champion}</span>
+                    {archived.runnerUp && (
+                      <span className="text-muted-foreground block text-sm">
+                        Champion — Runner-up: {archived.runnerUp}
+                      </span>
+                    )}
+                  </span>
+                </p>
+              )}
+              {hasResults && (
               <Card className="mt-4">
                 <CardContent className="grid gap-4 py-6">
                   {t.bracketResults && (
@@ -99,6 +139,7 @@ function TournamentDetailPage() {
                   {!t.bracketResults && !bracketUrl && <p className="text-muted-foreground text-sm">Brackets post here once play begins — follow scores on the D21 Facebook group.</p>}
                 </CardContent>
               </Card>
+              )}
             </div>
           )}
 
@@ -156,11 +197,6 @@ function TournamentDetailPage() {
             <p className="text-muted-foreground mt-3 text-center text-xs">
               No account needed. Takes ~3 minutes.
             </p>
-            {status === "completed" && (
-              <p className="mt-3 flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
-                <Trophy className="size-3.5" /> See Archives for final results.
-              </p>
-            )}
           </div>
         </aside>
       </div>

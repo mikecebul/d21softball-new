@@ -15,7 +15,7 @@ import {
   tournamentStatus,
   upcomingTournaments,
 } from "@/lib/data";
-import { fetchSeasonTournaments } from "@/lib/tournaments";
+import { getSeasonTournaments } from "@/lib/tournaments";
 import type { ApiTournament } from "@/lib/tournaments";
 import {
   ArrowRight,
@@ -30,7 +30,7 @@ import {
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
-  loader: () => fetchSeasonTournaments(SEASON_YEAR),
+  loader: () => getSeasonTournaments({ data: { year: SEASON_YEAR } }),
   component: HomePage,
 });
 
@@ -85,7 +85,7 @@ function HomePage() {
                 <Sunset className="size-4" /> {SEASON_YEAR} season — Petoskey, Michigan
               </p>
               <h1 className="font-display mt-5 max-w-3xl text-5xl leading-[0.95] font-semibold tracking-wide text-balance uppercase sm:text-6xl lg:text-7xl">
-                Fastpitch on the waterfront<span className="text-[var(--gold)]">.</span>
+                Fastpitch at the waterfront<span className="text-[var(--gold)]">.</span>
               </h1>
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/75">
                 Men's fastpitch tournaments at Waterfront Park — Little Traverse
@@ -95,7 +95,7 @@ function HomePage() {
               <div className="mt-8 flex flex-wrap gap-3">
                 {seasonOver ? (
                   <>
-                    <Link to="/archives">
+                    <Link to="/tournaments">
                       <Button size="lg" className="font-semibold">
                         View tournament results <ArrowRight className="size-4" />
                       </Button>
@@ -199,7 +199,7 @@ function HomePage() {
       {/* STATS */}
       <section
         aria-label={`${SEASON_YEAR} season at a glance`}
-        className="texture-lines border-t border-[var(--gold)]/50 bg-[var(--navy-deep)] text-white"
+        className="border-t border-[var(--gold)]/50 bg-[var(--navy-deep)] text-white"
       >
         <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px bg-white/10 lg:grid-cols-4">
           {[
@@ -230,7 +230,7 @@ function HomePage() {
           <SectionHeading
             kicker={`${SEASON_YEAR} season`}
             title="Every weekend, one park"
-            lede="All tourneys are fast pitch at Waterfront Park. Pick a weekend for the full story — teams, brackets and results live on each tournament page."
+            lede="All tourneys are fastpitch at Waterfront Park. Pick a weekend for the full story — teams, brackets and results live on each tournament page."
           />
           <Link to="/tournaments">
             <Button variant="outline">
@@ -313,7 +313,7 @@ function HomePage() {
           </div>
           <p className="text-muted-foreground mt-8 flex max-w-3xl flex-wrap items-center gap-x-2 gap-y-1 text-sm leading-relaxed">
             <Megaphone className="size-4 shrink-0" />
-            Welcome to another season of fast pitch softball at the waterfront in
+            Welcome to another season of fastpitch softball at the waterfront in
             Petoskey! Follow game scores, scorebook photos and champion galleries
             on "D21 Softball at Petoskey" — and plan to stay the week: local
             men's league plays Tuesday/Thursday, women's league
@@ -323,7 +323,7 @@ function HomePage() {
       </section>
 
       {/* RECENT CHAMPIONS */}
-      <section className="texture-lines bg-[var(--navy-deep)] text-white">
+      <section className="bg-[var(--navy-deep)] text-white">
         <div className="mx-auto max-w-6xl px-4 py-16">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <SectionHeading
@@ -332,10 +332,11 @@ function HomePage() {
             />
             <div className="flex gap-6">
               <Link
-                to="/archives"
+                to="/tournaments"
+                search={{ year: 2025 }}
                 className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--gold)] hover:underline"
               >
-                Full archives <ArrowRight className="size-4" />
+                Past seasons & results <ArrowRight className="size-4" />
               </Link>
               <Link
                 to="/hall-of-fame"
@@ -362,6 +363,13 @@ function HomePage() {
                     Runner-up — {a.runnerUp}
                   </p>
                 )}
+                <Link
+                  to="/tournaments/$slug"
+                  params={{ slug: a.slug }}
+                  className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[var(--gold)] hover:underline"
+                >
+                  View recap <ArrowRight className="size-3.5" />
+                </Link>
               </div>
             ))}
           </div>

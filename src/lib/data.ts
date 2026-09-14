@@ -4,6 +4,21 @@ export type TournamentStatus = "open" | "filling" | "full" | "closed" | "complet
 
 export const SEASON_YEAR = 2026;
 
+/** Earliest season available from the tournaments API. */
+export const FIRST_SEASON_YEAR = 2003;
+
+/** Seasons with no play (COVID). The API holds no tournaments for these years. */
+export const SKIPPED_SEASON_YEARS: number[] = [2020];
+
+/** All seasons with tournament data, newest first. */
+export function seasonYears(): number[] {
+  const years: number[] = [];
+  for (let y = SEASON_YEAR; y >= FIRST_SEASON_YEAR; y--) {
+    if (!SKIPPED_SEASON_YEARS.includes(y)) years.push(y);
+  }
+  return years;
+}
+
 export interface ArchiveResult {
   slug: string;
   year: number;

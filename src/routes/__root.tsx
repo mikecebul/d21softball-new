@@ -1,4 +1,6 @@
-import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
+import { QueryClientProvider } from "@tanstack/react-query";
+import type { QueryClient } from "@tanstack/react-query";
+import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 
@@ -6,7 +8,7 @@ import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -15,10 +17,16 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "District 21 Softball: men's fastpitch tournaments at Waterfront Park in Petoskey, Michigan. Register for a tournament, browse brackets and archives.",
+          "District 21 Softball: men's fastpitch tournaments at Waterfront Park in Petoskey, Michigan. Register for a tournament, browse brackets and past results.",
       },
     ],
-    links: [{ rel: "stylesheet", href: appCss }],
+    links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", href: "/favicon.ico", sizes: "48x48" },
+      { rel: "icon", href: "/logo192.png", type: "image/png", sizes: "192x192" },
+      { rel: "apple-touch-icon", href: "/logo192.png" },
+      { rel: "manifest", href: "/manifest.json" },
+    ],
   }),
   notFoundComponent: () => (
     <main className="mx-auto max-w-2xl px-4 py-24 text-center">
@@ -31,7 +39,17 @@ export const Route = createRootRoute({
     </main>
   ),
   shellComponent: RootDocument,
+  component: RootComponent,
 });
+
+function RootComponent() {
+  const { queryClient } = Route.useRouteContext();
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Outlet />
+    </QueryClientProvider>
+  );
+}
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (

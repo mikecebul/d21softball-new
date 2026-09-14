@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { formatDateRange, SEASON_YEAR, spotsLeftFor, spotsTotalFor, tournamentStatus } from "@/lib/data";
-import { fetchSeasonTournaments } from "@/lib/tournaments";
+import { getSeasonTournaments } from "@/lib/tournaments";
 import { ArrowLeft, ArrowRight, Check, CreditCard, Lock, Trophy } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -19,7 +19,7 @@ export const Route = createFileRoute("/register")({
   validateSearch: (s: Record<string, unknown>): { tournament?: string } => ({
     tournament: typeof s.tournament === "string" ? s.tournament : undefined,
   }),
-  loader: () => fetchSeasonTournaments(SEASON_YEAR),
+  loader: () => getSeasonTournaments({ data: { year: SEASON_YEAR } }),
   component: RegisterPage,
 });
 
@@ -196,7 +196,7 @@ function RegisterPage() {
                             {t.class} — {formatDateRange(t.date_from, t.date_to)}
                           </span>
                           <span className="text-muted-foreground mt-1 block text-xs">
-                            {disabled ? "Completed — see Archives for results." : `${left} of ${total} spots left`}
+                            {disabled ? "Completed — see the tournament page for results." : `${left} of ${total} spots left`}
                           </span>
                         </span>
                       </label>

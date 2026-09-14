@@ -10,7 +10,6 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer"
 import {
-  Archive,
   ChevronRight,
   ClipboardList,
   Compass,
@@ -27,7 +26,6 @@ import {
 
 const nav = [
   { to: "/tournaments", label: "Tournaments", icon: Trophy },
-  { to: "/archives", label: "Archives", icon: Archive },
   { to: "/local-leagues", label: "Local Leagues", icon: Users },
   { to: "/hall-of-fame", label: "Hall of Fame", icon: Medal },
   { to: "/visit", label: "Visit", icon: Compass },
@@ -35,55 +33,39 @@ const nav = [
   { to: "/rules", label: "Rules", icon: ClipboardList },
 ]
 
-const tickerItems = [
-  { text: "District 21 Softball — Petoskey, Michigan" },
-  { text: "Scott Kelly, District Commissioner — (231) 547-1144 — scott@d21softball.org", href: "mailto:scott@d21softball.org" },
-  { text: "Follow scores & scorebooks — D21 Softball at Petoskey on Facebook", href: "https://www.facebook.com/groups/127657947314063" },
-  { text: "Waterfront Park, Petoskey — Little Traverse Bay behind the outfield fence" },
-]
-
-function TickerRun({ ariaHidden = false }: { ariaHidden?: boolean }) {
-  return (
-    <div className="flex w-max shrink-0" aria-hidden={ariaHidden || undefined}>
-      {tickerItems.map((item, i) => (
-        <span key={i} className="flex items-center">
-          {item.href ? (
-            <a
-              href={item.href}
-              target={item.href.startsWith("http") ? "_blank" : undefined}
-              rel={item.href.startsWith("http") ? "noreferrer" : undefined}
-              className="transition hover:text-[var(--gold)]"
-            >
-              {item.text}
-            </a>
-          ) : (
-            item.text
-          )}
-          <span className="px-6 text-white/30">◆</span>
-        </span>
-      ))}
-    </div>
-  )
+const contactBar = {
+  phone: "(231) 547-1144",
+  email: "scott@d21softball.org",
 }
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
   return (
     <header className="sticky top-0 z-40">
-      {/* ticker */}
-      <div className="group overflow-hidden bg-[var(--navy-deep)] text-white/85">
-        <div className="flex w-max animate-ticker font-condensed text-xs tracking-[0.18em] uppercase group-hover:[animation-play-state:paused]">
-          <TickerRun />
-          <TickerRun ariaHidden />
+      {/* contact bar */}
+      <div className="bg-[var(--navy-deep)] text-white/85">
+        <div className="mx-auto flex max-w-6xl items-center justify-center gap-2 px-4 py-2 font-condensed text-xs tracking-[0.14em] uppercase">
+          <span className="hidden sm:inline">Scott Kelly, District Commissioner —</span>
+          <a
+            href={`tel:${contactBar.phone.replace(/[^0-9]/g, "")}`}
+            className="inline-flex items-center gap-1.5 hover:text-[var(--gold)]"
+          >
+            <Phone className="size-3.5" /> {contactBar.phone}
+          </a>
+          <span className="text-white/30">—</span>
+          <a
+            href={`mailto:${contactBar.email}`}
+            className="inline-flex items-center gap-1.5 hover:text-[var(--gold)]"
+          >
+            <Mail className="size-3.5" /> {contactBar.email}
+          </a>
         </div>
       </div>
       {/* main bar */}
       <div className="border-b bg-[var(--paper)]/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
           <Link to="/" className="flex items-center gap-3">
-            <span className="grid size-10 place-items-center rounded-lg bg-[var(--navy)] font-display text-lg font-semibold text-white">
-              21
-            </span>
+            <img src="/logo.png" alt="D21 Softball logo" className="size-10" width={40} height={40} />
             <span className="leading-tight">
               <span className="block font-display text-lg font-semibold tracking-wide uppercase">
                 D21 Softball

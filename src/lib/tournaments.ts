@@ -1,3 +1,5 @@
+import { createServerFn } from "@tanstack/react-start";
+
 export const TOURNAMENTS_API_BASE = "https://api.d21softball.org";
 
 export interface ApiTeam {
@@ -79,12 +81,42 @@ export async function fetchTournaments(params?: { limit?: number; sort?: string 
   return (await res.json()) as ApiTournament[];
 }
 
-export async function fetchSeasonTournaments(year: number): Promise<ApiTournament[]> {
-  // API has no year filter, pull everything (142 rows, ~2MB) sorted newest-first
-  // then filter client-side. _limit=-1 disables Strapi pagination.
-  const all = await fetchTournaments({ sort: "date_from:DESC", limit: -1 });
+// The API has no year filter, so every season query pulls the full ~2 MB list.
+// Cache it per server process so repeat requests resolve instantly. All fetching
+// happens server-side via server functions — the browser never talks to the
+// upstream API directly, so its CORS policy can't affect us.
+let allTournaments: ApiTournament[] | null = null;
+let allTournamentsInflight: Promise<ApiTournament[]> | null = null;
+
+function fetchAllTournaments(): Promise<ApiTournament[]> {
+  if (allTournaments) return Promise.resolve(allTournaments);
+  if (!allTournamentsInflight) {
+    allTournamentsInflight = fetchTournaments({ sort: "date_from:DESC", limit: -1 })
+      .then((all) => {
+        allTournaments = all;
+        allTournamentsInflight = null;
+        return all;
+      })
+      .catch((err) => {
+        allTournamentsInflight = null;
+        throw err;
+      });
+  }
+  return allTournamentsInflight;
+}
+
+async function fetchSeasonTournaments(year: number): Promise<ApiTournament[]> {
+  const all = await fetchAllTournaments();
   return all.filter((t) => new Date(t.date_from).getUTCFullYear() === year);
 }
+
+export const getSeasonTournaments = createServerFn({ method: "GET" })
+  .validator((input: { year: number }) => input)
+  .handler(async ({ data }) => fetchSeasonTournaments(data.year));
+
+export const getTournamentBySlug = createServerFn({ method: "GET" })
+  .validator((input: { slug: string }) => input)
+  .handler(async ({ data }) => fetchTournamentBySlug(data.slug));
 
 export async function fetchTournamentBySlug(slug: string): Promise<ApiTournament | undefined> {
   const url = `${TOURNAMENTS_API_BASE}/tournaments?slug=${encodeURIComponent(slug)}`;
