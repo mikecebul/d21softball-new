@@ -1,12 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router"
-import {
-  ArrowDown,
-  ArrowUpRight,
-  MapPin,
-  Trophy,
-  Flag,
-  ArrowRight,
-} from "lucide-react"
+import { ArrowUpRight, MapPin, Trophy, Flag, ArrowRight } from "lucide-react"
 import {
   SEASON_YEAR,
   formatDateRange,
@@ -35,22 +28,23 @@ function HomePage() {
       <section className="ballpark-hero">
         <div className="hero-copy">
           <p className="eyebrow">
-            <span className="little-star">✦</span> PETOSKEY, MICHIGAN • DISTRICT
-            21
+            <span className="little-star">✦</span> DISTRICT 21 • ANNUAL
+            TOURNAMENTS
           </p>
           <h1>
-            BIG GAMES.
+            MEN’S
             <br />
-            SMALL TOWN.
+            FASTPITCH.
             <br />
-            <span>GREAT LAKE.</span>
+            <span>30+ YEARS.</span>
           </h1>
           <div className="hero-bottom">
             <p>
-              Good competition. Better company.
+              More than 30 years of men’s fastpitch tournament tradition.
               <br />
-              Men’s fastpitch on the shores of Little Traverse Bay.
-              <br className="desktop-break" /> This is summer at the waterfront.
+              Hosted by District 21 at Waterfront Park in Petoskey.
+              <br className="desktop-break" /> Find your tournament. Get your
+              team in the game.
             </p>
             <a href="#schedule" className="field-button">
               Find your tournament <ArrowUpRight size={19} />
@@ -64,33 +58,29 @@ function HomePage() {
             fetchPriority="high"
           />
           <div className="park-stamp">
-            <span>THE WATERFRONT</span>
             <strong>D21</strong>
-            <span>FASTPITCH • PETOSKEY</span>
+            <span>
+              FASTPITCH
+              <br />
+              PETOSKEY
+            </span>
           </div>
           <div className="photo-caption">
             <span>
               <MapPin size={14} /> WATERFRONT PARK
             </span>
-            <span>YOUR SUMMER STARTS HERE ↗</span>
+            <span>DISTRICT 21 SOFTBALL</span>
           </div>
         </div>
-        <a
-          href="#schedule"
-          className="hero-scroll"
-          aria-label="Explore the tournament schedule"
-        >
-          <ArrowDown size={17} />
-        </a>
       </section>
       <div className="tradition-strip">
-        <span>FASTPITCH. FRESH AIR. FIRST-CLASS WEEKENDS.</span>
+        <span>MEN’S FASTPITCH SOFTBALL</span>
         <span>✦</span>
-        <span>FIVE-TEAM ROUND ROBINS</span>
+        <span>ANNUAL TOURNAMENTS</span>
         <span>✦</span>
-        <span>FOUR-GAME GUARANTEE*</span>
+        <span>30+ YEARS OF TRADITION</span>
         <span>✦</span>
-        <span>LAKE VIEWS INCLUDED</span>
+        <span>DISTRICT 21</span>
       </div>
       <section className="schedule-section guide-container" id="schedule">
         <div className="section-intro">
@@ -174,7 +164,7 @@ function HomePage() {
           </p>
         )}
         <div className="schedule-foot">
-          <p>*Typical round-robin format. Check each tournament for details.</p>
+          <p>Check each tournament for its format, eligibility and details.</p>
           <Link to="/register" className="text-link">
             Team registration <ArrowRight size={16} />
           </Link>

@@ -64,19 +64,23 @@ export function SiteHeader() {
       {/* main bar */}
       <div className="main-navigation border-b bg-[var(--paper)]/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
-          <Link to="/" className="flex items-center gap-3">
+          <Link
+            to="/"
+            aria-label="D21 Softball home"
+            className="flex shrink-0 items-center gap-2.5"
+          >
             <img
-              src="/softball-logo.png"
-              alt="D21 Softball logo"
-              className="size-10"
-              width={40}
-              height={40}
+              src="/d21-diamond-logo.png"
+              alt=""
+              className="size-12 shrink-0 object-contain"
+              width={48}
+              height={48}
             />
             <span className="leading-tight">
-              <span className="block font-display text-lg font-semibold tracking-wide uppercase">
-                D21 Softball
+              <span className="block font-display text-xl font-semibold tracking-[0.03em] uppercase">
+                District 21 Softball
               </span>
-              <span className="block text-xs text-muted-foreground">
+              <span className="block text-[10px] font-semibold tracking-[0.08em] text-muted-foreground">
                 PETOSKEY, MICHIGAN
               </span>
             </span>

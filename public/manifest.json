@@ -3,13 +3,14 @@
   "name": "D21 Softball \u2014 Fastpitch at the waterfront",
   "icons": [
     {
-      "src": "softball-logo.png",
-      "type": "image/png",
-      "sizes": "1254x1254"
+      "src": "favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#0F1F3D",
-  "background_color": "#FAF6EB"
+  "theme_color": "#203c32",
+  "background_color": "#f5f3e8"
 }

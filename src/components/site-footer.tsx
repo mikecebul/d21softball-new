@@ -1,7 +1,8 @@
-import { Link } from "@tanstack/react-router";
-import { SponsorShowcase } from "@/components/sponsor-showcase";
-import { Separator } from "@/components/ui/separator";
-import { Mail, Phone, MapPin, Share2 } from "lucide-react";
+import { Link } from "@tanstack/react-router"
+import { SponsorShowcase } from "@/components/sponsor-showcase"
+import { Separator } from "@/components/ui/separator"
+import { Mail, Phone, MapPin } from "lucide-react"
+import { FacebookLogo } from "@phosphor-icons/react"
 
 export function SiteFooter() {
   return (
@@ -18,11 +19,19 @@ export function SiteFooter() {
             Traverse Bay behind the outfield fence, sunsets included.
           </p>
           <div className="mt-4 flex flex-col gap-2 text-sm">
-            <span className="font-semibold text-white/90">District Commissioner — Scott Kelly</span>
-            <a href="mailto:scott@d21softball.org" className="inline-flex items-center gap-2 text-white/75 hover:text-white">
+            <span className="font-semibold text-white/90">
+              District Commissioner — Scott Kelly
+            </span>
+            <a
+              href="mailto:scott@d21softball.org"
+              className="inline-flex items-center gap-2 text-white/75 hover:text-white"
+            >
               <Mail className="size-4" /> scott@d21softball.org
             </a>
-            <a href="tel:+12315471144" className="inline-flex items-center gap-2 text-white/75 hover:text-white">
+            <a
+              href="tel:+12315471144"
+              className="inline-flex items-center gap-2 text-white/75 hover:text-white"
+            >
               <Phone className="size-4" /> (231) 547-1144
             </a>
             <a
@@ -36,26 +45,54 @@ export function SiteFooter() {
           </div>
         </div>
         <div>
-          <p className="font-condensed text-xs tracking-[0.22em] uppercase text-white/60">
+          <p className="font-condensed text-xs tracking-[0.22em] text-white/60 uppercase">
             Play
           </p>
           <div className="mt-3 grid gap-2 text-sm">
-            <Link to="/tournaments" className="text-white/75 hover:text-white">2026 Tournaments</Link>
-            <Link to="/register" className="text-white/75 hover:text-white">Register for a tournament</Link>
-            <Link to="/tournaments" search={{ year: 2025 }} className="text-white/75 hover:text-white">Past seasons & results</Link>
-            <Link to="/local-leagues" className="text-white/75 hover:text-white">Local leagues</Link>
-            <Link to="/hall-of-fame" className="text-white/75 hover:text-white">Hall of Fame</Link>
+            <Link to="/tournaments" className="text-white/75 hover:text-white">
+              2026 Tournaments
+            </Link>
+            <Link to="/register" className="text-white/75 hover:text-white">
+              Register for a tournament
+            </Link>
+            <Link
+              to="/tournaments"
+              search={{ year: 2025 }}
+              className="text-white/75 hover:text-white"
+            >
+              Past seasons & results
+            </Link>
+            <Link
+              to="/local-leagues"
+              className="text-white/75 hover:text-white"
+            >
+              Local leagues
+            </Link>
+            <Link to="/hall-of-fame" className="text-white/75 hover:text-white">
+              Hall of Fame
+            </Link>
           </div>
         </div>
         <div>
-          <p className="font-condensed text-xs tracking-[0.22em] uppercase text-white/60">
+          <p className="font-condensed text-xs tracking-[0.22em] text-white/60 uppercase">
             Know before you go
           </p>
           <div className="mt-3 grid gap-2 text-sm">
-            <Link to="/rules" className="text-white/75 hover:text-white">Pitcher classification & bats</Link>
-            <Link to="/umpires" className="text-white/75 hover:text-white">Umpire registration</Link>
-            <Link to="/visit" className="text-white/75 hover:text-white">Lodging & fuel</Link>
-            <a href="https://www.usasoftballmi.org" target="_blank" rel="noreferrer" className="text-white/75 hover:text-white">
+            <Link to="/rules" className="text-white/75 hover:text-white">
+              Pitcher classification & bats
+            </Link>
+            <Link to="/umpires" className="text-white/75 hover:text-white">
+              Umpire registration
+            </Link>
+            <Link to="/visit" className="text-white/75 hover:text-white">
+              Lodging & fuel
+            </Link>
+            <a
+              href="https://www.usasoftballmi.org"
+              target="_blank"
+              rel="noreferrer"
+              className="text-white/75 hover:text-white"
+            >
               USA Softball of Michigan
             </a>
             <a
@@ -64,7 +101,12 @@ export function SiteFooter() {
               rel="noreferrer"
               className="inline-flex items-center gap-2 text-white/75 hover:text-white"
             >
-              <Share2 className="size-4" /> D21 Softball at Petoskey
+              <FacebookLogo
+                className="size-4"
+                weight="fill"
+                aria-hidden="true"
+              />{" "}
+              D21 Softball at Petoskey
             </a>
           </div>
         </div>
@@ -75,5 +117,5 @@ export function SiteFooter() {
         <p>Fastpitch on Little Traverse Bay — Petoskey, Michigan.</p>
       </div>
     </footer>
-  );
+  )
 }
