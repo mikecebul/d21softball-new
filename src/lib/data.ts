@@ -46,13 +46,35 @@ export const archiveResults: ArchiveResult[] = [
   { slug: "2021-ed-white-memorial-tournament", year: 2021, name: "Ed White Memorial", class: "Men's D & E", champion: "Dekalb", runnerUp: "Dream Team", dateLabel: "Jun 18–20" },
 ];
 
-export const sponsors = [
-  { name: "Blarney Castle Oil & EZ Mart", url: "https://blarneycastleoil.com", blurb: "Fuel & convenience across Michigan" },
-  { name: "Polaris Home Funding", url: "https://www.polarishfc.com", blurb: "Grand Rapids home lending" },
-  { name: "DJS Systems", url: "https://d21softball.org", blurb: "Homer, MI" },
-  { name: "BASES Charlevoix", url: "https://www.basesmi.org", blurb: "Community support" },
-  { name: "Petoskey Area Visitors Bureau", url: "https://www.petoskeyarea.com", blurb: "Lodging & travel — PetoskeyArea.com" },
-  { name: "USA Softball of Michigan", url: "https://www.usasoftballmi.org", blurb: "Sanctioning body" },
+export interface Sponsor { name: string; url?: string | null; logo?: string; }
+
+// Sponsor names, logos and destinations from d21softball.org.
+export const sponsors: Sponsor[] = [
+  {
+    "name": "Polaris Home Funding",
+    "url": "https://www.polarishfc.com",
+    "logo": "/images/sponsors/Polaris_Logo_7bab6974ff.png"
+  },
+  {
+    "name": "Petoskey Area",
+    "url": "https://www.petoskeyarea.com/",
+    "logo": "/images/sponsors/petoskey_area_f8a18823a2.png"
+  },
+  {
+    "name": "DJS Holdings",
+    "url": null,
+    "logo": "/images/sponsors/pm_logo_djs_ab8d06ccf5.jpg"
+  },
+  {
+    "name": "BASES",
+    "url": "https://www.basesmi.org",
+    "logo": "/images/sponsors/Bases_Logo_for_Web_1024x252_be32d56fbe.png"
+  },
+  {
+    "name": "Blarney Castle",
+    "url": "https://blarneycastleoil.com/",
+    "logo": "/images/sponsors/BCOP_EZMART_LOGO_color_e170272370.jpg"
+  }
 ];
 
 export const homeUpdates = [
@@ -71,15 +93,6 @@ export const homeUpdates = [
     body: "Game scores, scorebook photos and champion galleries post to “D21 Softball at Petoskey” on Facebook.",
     link: "https://www.facebook.com/groups/127657947314063",
   },
-];
-
-export const hallOfFame = [
-  { name: "Ed White", position: "Commissioner", location: "Petoskey, MI", year: 2006, summary: "Coordinated waterfront tournaments for 30+ years. The waterfront ballpark bears his name." },
-  { name: "Rex Marquardt", position: "Player / Builder", location: "Petoskey, MI", year: 2012, summary: "Honored by the July 4th-weekend memorial tournament for decades of fastpitch support." },
-  { name: "Dick Harbaugh", position: "Coach", location: "Northern MI", year: 2014, summary: "Namesake of the late-June C/D memorial tournament." },
-  { name: "Dick Bare", position: "Umpire / Builder", location: "Petoskey, MI", year: 2016, summary: "Recognition weekend namesake; decades behind the plate and on the grounds crew." },
-  { name: "Ken Zulski", position: "Player", location: "Michigan", year: 2018, summary: "Longtime memorial invitational namesake." },
-  { name: "Mary Lou Ingalls", position: "Builder", location: "Michigan", year: 2019, summary: "Women's memorial invitational namesake." },
 ];
 
 export const localLeagues = [

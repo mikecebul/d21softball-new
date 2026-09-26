@@ -1,0 +1,5 @@
+Sponsor logos and Hall of Fame photographs copied from https://d21softball.org/hall-of-fame on 2026-09-26. Original media: https://api.d21softball.org/uploads/ with the same filenames. DJS Holdings has no published destination, so its card is intentionally not linked. USA Softball of Michigan remains linked in the footer as the sanctioning organization.
+
+The softball-logo.png was created using built-in image generation with transparency enabled. No model selector is exposed by this tool. Final prompt:
+
+Create a clean flat vector-style softball logo from scratch. Perfect geometrical circular yellow disc, perfectly smooth circular silhouette. Symmetrical red softball seams bow inward on left and right with evenly spaced matching red stitches. Flat solid yellow and solid red only. Centered on a square canvas with equal 5% padding. Genuine transparent background. Absolutely no texture, no grain, no roughness, no distressing, no stray pixels, no shading, no lighting, no gradient, no lettering. Professional digitally drawn geometric sports icon suitable at 40 pixels. Smooth antialiased edges.

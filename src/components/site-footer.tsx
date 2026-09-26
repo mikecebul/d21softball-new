@@ -1,33 +1,12 @@
 import { Link } from "@tanstack/react-router";
-import { sponsors } from "@/lib/data";
+import { SponsorShowcase } from "@/components/sponsor-showcase";
 import { Separator } from "@/components/ui/separator";
 import { Mail, Phone, MapPin, Share2 } from "lucide-react";
 
 export function SiteFooter() {
   return (
     <footer className="bg-[var(--navy-deep)] text-white">
-      {/* sponsors */}
-      <div className="border-b border-white/10">
-        <div className="mx-auto max-w-6xl px-4 py-10">
-          <p className="font-condensed text-xs tracking-[0.22em] uppercase text-white/60">
-            Summer series sponsors
-          </p>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {sponsors.map((s) => (
-              <a
-                key={s.name}
-                href={s.url}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-lg border border-white/10 bg-white/5 px-4 py-3 transition hover:bg-white/10"
-              >
-                <p className="text-sm font-semibold">{s.name}</p>
-                <p className="text-xs text-white/60">{s.blurb}</p>
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
+      <SponsorShowcase />
       {/* main footer */}
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-3">
         <div>

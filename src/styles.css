@@ -11,7 +11,7 @@
 
 @theme inline {
   --font-heading: var(--font-sans);
-  --font-sans: "Geist Variable", sans-serif;
+  --font-sans: "Nunito Sans Variable", sans-serif;
   --font-display: "Oswald Variable", "Barlow Condensed", sans-serif;
   --font-condensed: "Barlow Condensed", "Oswald Variable", sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
@@ -61,13 +61,13 @@
 }
 
 :root {
-  --background: oklch(0.985 0.008 85);
-  --foreground: oklch(0.22 0.04 260);
+  --background: #f5f3e9;
+  --foreground: #203c32;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.22 0.04 260);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.22 0.04 260);
-  --primary: oklch(0.505 0.213 27.518);
+  --primary: #244c3c;
   --primary-foreground: oklch(0.971 0.013 17.38);
   --secondary: oklch(0.28 0.06 260);
   --secondary-foreground: oklch(0.985 0.008 85);
@@ -86,11 +86,11 @@
   --chart-5: oklch(0.444 0.177 26.899);
   --radius: 0.625rem;
   /* Brand tokens */
-  --navy: oklch(0.28 0.06 260);
-  --navy-deep: oklch(0.2 0.05 265);
+  --navy: #203c32;
+  --navy-deep: #172e26;
   --ember: oklch(0.505 0.213 27.518);
   --sand: oklch(0.93 0.03 85);
-  --paper: oklch(0.985 0.008 85);
+  --paper: #f5f3e9;
   --gold: oklch(0.75 0.14 75);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -126,7 +126,7 @@
   --chart-3: oklch(0.577 0.245 27.325);
   --chart-4: oklch(0.505 0.213 27.518);
   --chart-5: oklch(0.444 0.177 26.899);
-  --navy: oklch(0.28 0.06 260);
+  --navy: #203c32;
   --navy-deep: oklch(0.16 0.045 265);
   --ember: oklch(0.637 0.237 25.331);
   --sand: oklch(0.3 0.04 260);
@@ -169,5 +169,635 @@
       radial-gradient(circle 10px at 0 50%, transparent 98%, black 100%),
       radial-gradient(circle 10px at 100% 50%, transparent 98%, black 100%);
     mask-composite: intersect;
+  }
+}
+
+/* The Waterfront Field Guide */
+.field-guide {
+  --field: #203c32;
+  --cream: #f5f3e9;
+  color: var(--field);
+}
+.contact-strip {
+  background: #203c32;
+}
+.field-header .main-navigation > div {
+  max-width: 1360px;
+  padding: 20px 40px;
+}
+.field-header .main-navigation img {
+  width: 46px;
+  height: 46px;
+}
+.field-header .main-navigation nav {
+  gap: 2px;
+}
+.field-header .main-navigation nav > a {
+  font-size: 13px;
+}
+.field-header button {
+  border-radius: 3px;
+}
+.ballpark-hero {
+  position: relative;
+  padding: 48px 40px 0;
+  max-width: 1440px;
+  margin: auto;
+}
+.hero-copy {
+  position: relative;
+  z-index: 2;
+}
+.eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+.little-star {
+  font-size: 24px;
+  vertical-align: middle;
+  margin-right: 8px;
+  color: #af603e;
+}
+.hero-copy h1 {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: clamp(78px, 8.7vw, 128px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 0.88;
+  margin: 24px 0 22px;
+}
+.hero-copy h1 > span {
+  color: #a65435;
+}
+.hero-copy {
+  width: 61%;
+}
+.hero-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 23px;
+  padding-bottom: 45px;
+}
+.hero-bottom p {
+  font-size: 15px;
+  line-height: 1.7;
+}
+.field-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  background: var(--field);
+  color: #fff;
+  padding: 16px 22px;
+  font-size: 13px;
+  font-weight: 750;
+  border: 1px solid var(--field);
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+.field-button:hover {
+  background: #385c47;
+  transform: translateY(-2px);
+}
+.hero-photo {
+  position: absolute;
+  right: 40px;
+  top: 49px;
+  bottom: 0;
+  width: 48%;
+  overflow: hidden;
+  background: #294b4a;
+}
+.hero-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, #102b2b99, transparent 60%);
+}
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% center;
+}
+.park-stamp {
+  position: absolute;
+  z-index: 1;
+  right: 27px;
+  top: 26px;
+  border: 1px solid #fff9;
+  border-radius: 50%;
+  width: 126px;
+  height: 126px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  transform: rotate(12deg);
+  outline: 1px solid #fff7;
+  outline-offset: -7px;
+}
+.park-stamp span {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+.park-stamp strong {
+  font-family: "Barlow Condensed";
+  font-size: 51px;
+  line-height: 1.15;
+}
+.photo-caption {
+  position: absolute;
+  z-index: 1;
+  bottom: 24px;
+  left: 25px;
+  right: 25px;
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+.photo-caption span:first-child {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+}
+.hero-scroll {
+  position: absolute;
+  bottom: 22px;
+  left: 46%;
+  border: 1px solid #203c3240;
+  border-radius: 50%;
+  padding: 10px;
+}
+.tradition-strip {
+  background: #e8e8dc;
+  margin-top: 0;
+  padding: 21px 40px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+}
+.guide-container {
+  max-width: 1280px;
+  margin: auto;
+  padding: 80px 40px;
+}
+.section-intro {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+  margin-bottom: 37px;
+}
+.field-guide h2 {
+  font-family: "Barlow Condensed";
+  font-size: 60px;
+  line-height: 0.98;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-top: 14px;
+}
+.section-intro h2 span {
+  color: #7a8674;
+}
+.section-side {
+  max-width: 320px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  font-weight: 800;
+  font-size: 12px;
+  border-bottom: 1px solid #203c3240;
+  padding-bottom: 5px;
+  margin-top: 16px;
+}
+.text-link:hover {
+  color: #a65435;
+}
+.schedule-labels {
+  display: grid;
+  grid-template-columns: 160px 1fr 190px;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  font-weight: 800;
+  padding: 15px 0;
+  border-bottom: 1px solid #203c32;
+}
+.tournament-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 190px;
+  align-items: center;
+  border-bottom: 1px solid #203c322e;
+  padding: 25px 0;
+  transition:
+    background 0.2s,
+    padding 0.2s;
+}
+.tournament-row:hover {
+  background: #e8e8dc;
+  padding-left: 14px;
+  padding-right: 14px;
+}
+.weekend-date > span {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.weekend-date strong {
+  display: block;
+  font-family: "Barlow Condensed";
+  font-size: 40px;
+  line-height: 1.1;
+}
+.weekend-date strong span {
+  font-size: 24px;
+  margin: 0 3px;
+}
+.row-number {
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #737d6e;
+}
+.tournament-name h3 {
+  font-family: "Barlow Condensed";
+  font-size: 28px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.tournament-name p {
+  font-size: 11px;
+  color: #677467;
+  margin-top: 3px;
+}
+.tournament-action > span {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: #737d6e;
+}
+.tournament-action strong {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-top: 9px;
+}
+.schedule-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  font-size: 10px;
+  color: #677467;
+  padding-top: 12px;
+}
+.waterfront-story {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #203c32;
+  color: #f5f3e9;
+}
+.story-art {
+  position: relative;
+  min-height: 530px;
+  overflow: hidden;
+}
+.story-art img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  filter: brightness(0.8);
+}
+.story-art-caption {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+}
+.story-art-caption strong {
+  font-family: "Barlow Condensed";
+  display: block;
+  font-size: 48px;
+  line-height: 0.98;
+  letter-spacing: 0;
+  margin-top: 15px;
+}
+.story-copy {
+  padding: 65px 70px;
+}
+.story-copy h2 {
+  font-size: 68px;
+}
+.story-copy h2 span {
+  color: #c5c6a9;
+}
+.story-copy > p:not(.eyebrow) {
+  max-width: 360px;
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 24px 0;
+  color: #d2d9ca;
+}
+.light-button {
+  background: #f5f3e9;
+  color: #203c32;
+}
+.light-button:hover {
+  background: #d9dccb;
+}
+.clubhouse-note {
+  font-size: 13px;
+  line-height: 1.7;
+}
+.clubhouse-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.clubhouse-card {
+  padding: 28px;
+  border: 1px solid #203c3240;
+  transition: background 0.2s;
+}
+.clubhouse-card:hover {
+  background: #e8e8dc;
+}
+.clubhouse-card > div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+.clubhouse-card .eyebrow {
+  font-size: 9px;
+  color: #7a8674;
+}
+.clubhouse-card h3 {
+  font-family: "Barlow Condensed";
+  font-size: 28px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin: 8px 0;
+}
+.clubhouse-card > p:last-child {
+  font-size: 12px;
+  line-height: 1.8;
+  max-width: 240px;
+}
+.commissioner-note {
+  border-top: 1px solid #203c3240;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 55px;
+}
+.commissioner-note .little-star {
+  font-size: 65px;
+}
+.commissioner-note h2 {
+  font-size: 36px;
+  margin: 7px 0;
+}
+.commissioner-note p:last-child {
+  font-size: 12px;
+  max-width: 470px;
+}
+.commissioner-note > a {
+  margin-left: auto;
+  white-space: nowrap;
+  font-family: "Barlow Condensed";
+  font-size: 30px;
+  font-weight: 600;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+html {
+  scroll-behavior: smooth;
+}
+#schedule {
+  scroll-margin-top: 20px;
+}
+a:focus-visible {
+  outline: 3px solid #af603e;
+  outline-offset: 5px;
+}
+@media (min-width: 1500px) {
+  .ballpark-hero {
+    padding-top: 65px;
+  }
+  .hero-photo {
+    top: 65px;
+  }
+}
+@media (max-width: 1100px) {
+  .field-header .main-navigation > div {
+    padding: 15px 24px;
+  }
+  .ballpark-hero {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+  .hero-photo {
+    right: 25px;
+  }
+  .hero-copy h1 {
+    font-size: 100px;
+  }
+  .photo-caption span:last-child {
+    display: none;
+  }
+  .hero-copy {
+    width: 66%;
+  }
+  .hero-photo {
+    width: 43%;
+  }
+  .story-copy {
+    padding: 50px 40px;
+  }
+  .tradition-strip {
+    font-size: 8px;
+    gap: 12px;
+  }
+  .guide-container {
+    padding: 65px 25px;
+  }
+}
+@media (max-width: 700px) {
+  .contact-strip > div {
+    gap: 8px;
+    font-size: 10px;
+    letter-spacing: 0.03em;
+  }
+  .contact-strip a[href^="mailto"],
+  .contact-strip a[href^="mailto"] + span {
+    display: none;
+  }
+  .contact-strip span.text-white\/30 {
+    display: none;
+  }
+  .ballpark-hero {
+    padding: 30px 20px 0;
+  }
+  .hero-copy {
+    width: 100%;
+  }
+  .hero-copy h1 {
+    font-size: clamp(69px, 17vw, 110px);
+    margin: 22px 0;
+  }
+  .hero-bottom {
+    gap: 20px;
+    padding-bottom: 30px;
+  }
+  .hero-bottom p {
+    font-size: 13px;
+  }
+  .hero-photo {
+    position: relative;
+    right: auto;
+    top: auto;
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    height: 290px;
+  }
+  .park-stamp {
+    width: 100px;
+    height: 100px;
+    right: 20px;
+    top: 20px;
+  }
+  .park-stamp span {
+    font-size: 7px;
+  }
+  .park-stamp strong {
+    font-size: 40px;
+  }
+  .hero-scroll {
+    display: none;
+  }
+  .tradition-strip {
+    padding: 16px 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+  .tradition-strip span:nth-child(n + 4) {
+    display: none;
+  }
+  .guide-container {
+    padding: 48px 20px;
+  }
+  .section-intro {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .field-guide h2 {
+    font-size: 45px;
+  }
+  .section-side {
+    max-width: 100%;
+    font-size: 13px;
+  }
+  .schedule-labels {
+    display: none;
+  }
+  .tournament-row {
+    grid-template-columns: 76px 1fr;
+    gap: 12px;
+    padding: 22px 0;
+  }
+  .weekend-date strong {
+    font-size: 30px;
+  }
+  .tournament-name h3 {
+    font-size: 24px;
+    line-height: 1.05;
+    margin: 6px 0;
+  }
+  .tournament-name p {
+    font-size: 10px;
+  }
+  .tournament-action {
+    grid-column: 2;
+  }
+  .tournament-action > span {
+    display: none;
+  }
+  .tournament-action strong {
+    margin: 0;
+  }
+  .schedule-foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .waterfront-story {
+    grid-template-columns: 1fr;
+  }
+  .story-art {
+    min-height: 300px;
+    height: 300px;
+  }
+  .story-art-caption {
+    left: 24px;
+    bottom: 25px;
+  }
+  .story-copy {
+    padding: 40px 25px;
+  }
+  .story-copy h2 {
+    font-size: 60px;
+  }
+  .clubhouse-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .clubhouse-card > div {
+    margin-bottom: 25px;
+  }
+  .commissioner-note {
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+  .commissioner-note .little-star {
+    display: none;
+  }
+  .commissioner-note > a {
+    margin-left: 0;
+  }
+  .clubhouse-note {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
   }
 }

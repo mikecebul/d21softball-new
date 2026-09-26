@@ -41,11 +41,11 @@ const contactBar = {
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
   return (
-    <header className="sticky top-0 z-40">
+    <header className="field-header relative z-40">
       {/* contact bar */}
-      <div className="bg-[var(--navy-deep)] text-white/85">
-        <div className="mx-auto flex max-w-6xl items-center justify-center gap-2 px-4 py-2 font-condensed text-xs tracking-[0.14em] uppercase">
-          <span className="hidden sm:inline">Scott Kelly, District Commissioner —</span>
+      <div className="contact-strip text-white/85">
+        <div className="mx-auto flex max-w-6xl items-center justify-center gap-4 px-4 py-2 font-condensed text-xs tracking-[0.14em] uppercase">
+          <span className="commissioner-name">Scott Kelly, Commissioner</span>
           <a
             href={`tel:${contactBar.phone.replace(/[^0-9]/g, "")}`}
             className="inline-flex items-center gap-1.5 hover:text-[var(--gold)]"
@@ -62,16 +62,22 @@ export function SiteHeader() {
         </div>
       </div>
       {/* main bar */}
-      <div className="border-b bg-[var(--paper)]/95 backdrop-blur">
+      <div className="main-navigation border-b bg-[var(--paper)]/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
           <Link to="/" className="flex items-center gap-3">
-            <img src="/logo.png" alt="D21 Softball logo" className="size-10" width={40} height={40} />
+            <img
+              src="/softball-logo.png"
+              alt="D21 Softball logo"
+              className="size-10"
+              width={40}
+              height={40}
+            />
             <span className="leading-tight">
               <span className="block font-display text-lg font-semibold tracking-wide uppercase">
                 D21 Softball
               </span>
               <span className="block text-xs text-muted-foreground">
-                Fastpitch at the waterfront
+                PETOSKEY, MICHIGAN
               </span>
             </span>
           </Link>
@@ -87,7 +93,7 @@ export function SiteHeader() {
               </Link>
             ))}
             <Link to="/register">
-              <Button className="ml-2 font-semibold">Register for a tournament</Button>
+              <Button className="ml-2 font-semibold">Register your team</Button>
             </Link>
           </nav>
           <button
