@@ -1,6 +1,6 @@
 import { revalidateLogic } from "@tanstack/react-form"
 import { Link } from "@tanstack/react-router"
-import { ArrowLeft, ArrowRight, CalendarDays, Lock, Pencil } from "lucide-react"
+import { ArrowLeft, ArrowRight, CalendarDays, Pencil } from "lucide-react"
 import { withForm } from "@/components/forms/form"
 import { errorMessages } from "@/components/forms/fields"
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -21,13 +21,11 @@ import { Separator } from "@/components/ui/separator"
 import { canRegister, formatDateRange, tournamentStatus } from "@/lib/data"
 import {
   acknowledgementsSchema,
-  classificationOptions,
   createTournamentSchema,
   detailsSchema,
   entryFee,
   registrationFormOptions,
   roleOptions,
-  rosterOptions,
 } from "@/lib/registration"
 import type { ApiTournament } from "@/lib/tournaments"
 
@@ -243,9 +241,6 @@ export const DetailsStep = withForm({
             <FieldGroup>
               <FieldSet>
                 <FieldLegend>Your team</FieldLegend>
-                <FieldDescription>
-                  Use the team name and hometown you want listed in the bracket.
-                </FieldDescription>
                 <FieldGroup className="grid sm:grid-cols-2">
                   <form.AppField name="details.teamName">
                     {(field) => (
@@ -267,34 +262,11 @@ export const DetailsStep = withForm({
                       />
                     )}
                   </form.AppField>
-                  <form.AppField name="details.classification">
-                    {(field) => (
-                      <field.SelectField
-                        label="Team classification"
-                        options={classificationOptions}
-                        placeholder="Choose a classification"
-                      />
-                    )}
-                  </form.AppField>
-                  <form.AppField name="details.rosterSize">
-                    {(field) => (
-                      <field.SelectField
-                        label="Estimated roster size"
-                        optional
-                        options={rosterOptions}
-                        placeholder="Choose a roster size"
-                      />
-                    )}
-                  </form.AppField>
                 </FieldGroup>
               </FieldSet>
               <Separator />
               <FieldSet>
                 <FieldLegend>Team contact</FieldLegend>
-                <FieldDescription>
-                  The person the commissioner can reach about your entry and
-                  tournament updates.
-                </FieldDescription>
                 <FieldGroup className="grid sm:grid-cols-2">
                   <form.AppField name="details.firstName">
                     {(field) => (
@@ -418,7 +390,7 @@ export const ReviewStep = withForm({
                             selected.date_from,
                             selected.date_to
                           )}{" "}
-                          · {selected.class}
+                          · {selected.class} · {entryFee(selected.price)}
                         </p>
                       )}
                     </ReviewSection>
@@ -432,29 +404,6 @@ export const ReviewStep = withForm({
                         <dd className="break-words">
                           {details.teamName} · {details.hometown}
                         </dd>
-                        <dt className="text-muted-foreground">
-                          Classification
-                        </dt>
-                        <dd>
-                          {classificationOptions.find(
-                            (option) => option.value === details.classification
-                          )?.label ?? details.classification}
-                        </dd>
-                        {details.rosterSize && (
-                          <>
-                            <dt className="text-muted-foreground">
-                              Roster estimate
-                            </dt>
-                            <dd>
-                              {
-                                rosterOptions.find(
-                                  (option) =>
-                                    option.value === details.rosterSize
-                                )?.label
-                              }
-                            </dd>
-                          </>
-                        )}
                         <dt className="text-muted-foreground">Contact</dt>
                         <dd className="break-words">
                           {details.firstName} {details.lastName} ·{" "}
@@ -480,7 +429,6 @@ export const ReviewStep = withForm({
             </form.Subscribe>
             <Separator className="my-6" />
             <FieldSet>
-              <FieldLegend>Before you continue</FieldLegend>
               <FieldGroup>
                 <form.AppField name="acknowledgements.rules">
                   {(field) => (
@@ -495,8 +443,7 @@ export const ReviewStep = withForm({
                         >
                           tournament rules
                         </Link>
-                        , including pitcher classification and approved
-                        equipment.
+                        .
                       </span>
                     </field.AcknowledgementField>
                   )}
@@ -504,20 +451,12 @@ export const ReviewStep = withForm({
                 <form.AppField name="acknowledgements.authorized">
                   {(field) => (
                     <field.AcknowledgementField>
-                      I am authorized to register this team and have checked the
-                      details above.
+                      I am authorized to register this team.
                     </field.AcknowledgementField>
                   )}
                 </form.AppField>
               </FieldGroup>
             </FieldSet>
-            {!checkoutAvailable && (
-              <p className="mt-6 flex items-start gap-2 text-sm text-muted-foreground">
-                <Lock className="mt-0.5 size-4 shrink-0" />
-                You can check your details here. Online checkout is not
-                available yet, and nothing will be submitted.
-              </p>
-            )}
             <Navigation
               onBack={onBack}
               pending={pending || group.state.meta.isSubmitting}

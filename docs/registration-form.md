@@ -12,31 +12,31 @@ The account-free flow has three steps: tournament selection, team and contact in
 
 Answers save in `sessionStorage`, scoped to the tab, with a 24-hour expiration from the last save. Refresh restores unfinished answers at the first step so the selection can be reviewed. A tournament that has closed or filled is cleared from the draft. An available tournament in a new URL takes precedence over the saved selection. Rules and authorization acknowledgments are never stored and must be made again. Corrupt or expired drafts are discarded, storage failures leave the form usable, and Start over clears the draft.
 
-The form asks for team name, hometown, classification, optional roster estimate, contact name, email, phone, role, and optional notes. The classification includes a “Not sure” choice so the commissioner can resolve eligibility. Acknowledgments cover reviewing published rules and authorization to register the team; the form does not invent a liability waiver.
+The form asks for team name, hometown, contact name, email, phone, role, and optional notes. Team classification and roster size are not collected. Existing drafts restore the remaining answers and discard those old fields. Acknowledgments cover reviewing published rules and authorization to register the team; the form does not invent a liability waiver.
 
 ## Backend handoff
 
 `RegistrationForm` accepts an optional asynchronous `onCheckout` adapter. It receives the normalized `RegistrationSubmission` exported from `src/lib/registration.ts`:
 
-- `schemaVersion: 1`
+- `schemaVersion: 2`
 - `tournamentSlug`
-- `team`: name, hometown, classification, estimated roster size (nullable)
+- `team`: name, hometown
 - `contact`: first name, last name, email (trimmed/lowercase), phone, role
 - `notes`
 - `acknowledgements`: rules reviewed and authorized to register
 
-The contract excludes fees, order IDs, and payment status. The later Payload server handler must validate this data independently, resolve the tournament, recheck capacity and eligibility, store the submission, and calculate the authoritative fee before creating Stripe Checkout. Payment confirmation must come from a verified webhook. Acknowledgment timestamps and any document versions should be recorded by the backend.
+The contract excludes fees, order IDs, and payment status. `registrationCheckout` posts it to `/api/registration/checkout` with a stable submission UUID for identical retries. The server independently validates it, resolves the current tournament and fee, checks availability, and saves the original submission and payment attempt before creating Stripe Checkout. Acknowledgment timestamps are recorded by the server.
 
-There is no adapter on the public route yet. Its final action checks the details and explicitly states that no entry or payment has been submitted. Connecting an adapter changes the action to “Continue to secure checkout”; pending attempts are disabled, and a failed adapter preserves the answers for retry. The current success route also cannot claim payment confirmation.
+The public route supplies this adapter. “Continue to secure checkout” opens Stripe's hosted page; pending attempts are disabled and failures preserve the answers. Identical retries reuse an open session and its persisted idempotency key. Changed answers create a new original submission. Start over also clears the checkout request identity.
 
-Payload installation, collections, Stripe endpoints, emails, and migration from `api.d21softball.org` are intentionally reserved for the next backend phase. The local `cvx-junior-golf` repository is the user's requested reference for that phase.
+`/api/stripe/webhook` verifies Stripe's raw-body signature and reconciles current Stripe objects before updating payment history and confirming an entry. The success page polls the database and never treats a redirect as proof of payment. See [the history model and event list](registration-history.md). Email delivery, tournament/media migration, and atomic capacity reservations remain future work.
 
 ## Trying the form locally
 
-Run `pnpm dev` and open `/register?tournament=registration-preview`. Development adds “Test Tournament — Registration Preview” to the registration choices, with a sample $600 fee, 12 open spots, and a Friday–Sunday weekend at least four weeks ahead. Its dates advance automatically so the form stays testable after the real season ends. Complete the team details, review them, and select “Check registration details” to exercise validation without submitting an entry or taking payment.
+Configure `.env` using `.env.example`, start the Stripe CLI listener described in the README, and run `pnpm dev`. Open `/register?tournament=registration-preview`. Development adds “Test Tournament — Registration Preview,” with a sample $600 fee, 12 open spots, and a Friday–Sunday weekend at least four weeks ahead. Its dates advance automatically. Complete the form and continue to Stripe Checkout using a test key. The server rejects this sample with live keys or production builds.
 
 The sample appears only on the development registration page. It is not added to the upstream API, published tournament list, archives, or production builds.
 
 ## Verification
 
-`pnpm test` covers availability, schema validation, normalization, expired and corrupt drafts, refreshed consent, navigation, invalid-field focus, editing, preview checks, checkout failures, capacity changes before handoff, and duplicate-attempt prevention. Browser checks use the development sample tournament to exercise the full desktop/mobile flow without changing production tournament data.
+`pnpm test` covers form validation/drafts/navigation, checkout failures, authoritative fee/input validation, immutable retry identity, payment reconciliation, history invariants, and the React Flight suspension regression. Browser verification reached the actual Stripe sandbox and restored the cancelled checkout's draft. Signed webhook fixtures were tested against an isolated MongoDB database for confirmation, concurrent deduplication, out-of-order refunds, partial/full refunds, disputes, failed-event retries, and retained versions. No real payment was made.

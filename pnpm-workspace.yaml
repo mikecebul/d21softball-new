@@ -7,3 +7,6 @@ allowBuilds:
   msw: false
   sharp: true
   workerd: true
+
+patchedDependencies:
+  '@tanstack/react-start-rsc@0.1.59': patches/@tanstack__react-start-rsc@0.1.59.patch

@@ -43,8 +43,6 @@ const validDraft = () => ({
   details: {
     teamName: "Bay Sox",
     hometown: "Petoskey, MI",
-    classification: "C",
-    rosterSize: "",
     firstName: "Alex",
     lastName: "Kelly",
     email: "Alex@Example.com",
@@ -166,11 +164,11 @@ describe("registration form workflow", () => {
     )
     await screen.findByText("Your details are ready")
     expect(
-      screen.getByText(/no entry or payment has been submitted/)
+      screen.getByText("Checkout is not configured.")
     ).toBeTruthy()
   })
 
-  it("passes normalized data to the future checkout adapter and recovers from failure", async () => {
+  it("passes normalized data to the checkout adapter and recovers from failure", async () => {
     const onCheckout = vi.fn().mockRejectedValue(new Error("Unavailable"))
     await openReview(onCheckout)
     screen
@@ -179,7 +177,7 @@ describe("registration form workflow", () => {
     fireEvent.click(
       screen.getByRole("button", { name: "Continue to secure checkout" })
     )
-    await screen.findByText(/We couldn’t start checkout/)
+    await screen.findByText("Unavailable")
     expect(onCheckout).toHaveBeenCalledTimes(1)
     expect(onCheckout.mock.calls[0][0]).toMatchObject({
       tournamentSlug: tournament.slug,

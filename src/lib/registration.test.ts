@@ -53,8 +53,6 @@ describe("registration validation and recovery", () => {
     details: {
       teamName: " Bay Sox ",
       hometown: "Petoskey, MI",
-      classification: "C",
-      rosterSize: "",
       firstName: "Alex",
       lastName: "Kelly",
       email: " alex@example.com ",
@@ -66,18 +64,14 @@ describe("registration validation and recovery", () => {
   }
   const open = { ...tournament, slug: "summer" }
 
-  it("normalizes names and accepts optional roster information", () => {
+  it("normalizes team and contact details without classification or roster information", () => {
     const result = createRegistrationSchema([open], now).parse(values)
     expect(result.details.teamName).toBe("Bay Sox")
     expect(result.details.email).toBe("alex@example.com")
   })
-  it("rejects invalid phone numbers, unknown classifications and missing acknowledgments", () => {
+  it("rejects invalid phone numbers and missing acknowledgments", () => {
     expect(
       detailsSchema.safeParse({ ...values.details, phone: "1234567" }).success
-    ).toBe(false)
-    expect(
-      detailsSchema.safeParse({ ...values.details, classification: "invalid" })
-        .success
     ).toBe(false)
     expect(
       acknowledgementsSchema.safeParse({ rules: false, authorized: true })

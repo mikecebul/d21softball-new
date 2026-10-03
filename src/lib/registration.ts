@@ -3,22 +3,6 @@ import { z } from "zod"
 import { canRegister } from "./data"
 import type { ApiTournament } from "./tournaments"
 
-export const classificationOptions = [
-  { value: "B", label: "Men’s Class B" },
-  { value: "C", label: "Men’s Class C" },
-  { value: "D", label: "Men’s Class D" },
-  { value: "E", label: "Men’s Class E" },
-  { value: "Open", label: "Open" },
-  { value: "50+", label: "50 & Over" },
-  { value: "Unsure", label: "Not sure — confirm with the commissioner" },
-] as const
-
-export const rosterOptions = [
-  { value: "10-12", label: "10–12 players" },
-  { value: "13-15", label: "13–15 players" },
-  { value: "16+", label: "16 or more players" },
-] as const
-
 export const roleOptions = [
   { value: "Manager", label: "Manager" },
   { value: "Coach", label: "Coach" },
@@ -36,19 +20,6 @@ const text = (label: string, max = 100) =>
 export const detailsSchema = z.object({
   teamName: text("Team name"),
   hometown: text("Hometown"),
-  classification: z
-    .string()
-    .refine(
-      (value) => classificationOptions.some((option) => option.value === value),
-      "Choose your team’s classification. Select ‘Not sure’ if you need help."
-    ),
-  rosterSize: z
-    .string()
-    .refine(
-      (value) =>
-        !value || rosterOptions.some((option) => option.value === value),
-      "Choose an estimated roster size."
-    ),
   firstName: text("First name"),
   lastName: text("Last name"),
   email: z
@@ -115,8 +86,6 @@ export function registrationDefaults(slug = "") {
     details: {
       teamName: "",
       hometown: "",
-      classification: "",
-      rosterSize: "",
       firstName: "",
       lastName: "",
       email: "",
@@ -138,13 +107,11 @@ export const registrationFormOptions = formOptions({
 export function registrationSubmission(values: RegistrationValues) {
   const details = detailsSchema.parse(values.details)
   return {
-    schemaVersion: 1 as const,
+    schemaVersion: 2 as const,
     tournamentSlug: values.tournament.slug,
     team: {
       name: details.teamName,
       hometown: details.hometown,
-      classification: details.classification,
-      estimatedRosterSize: details.rosterSize || null,
     },
     contact: {
       firstName: details.firstName,
@@ -171,8 +138,6 @@ const draftSchema = z.object({
     details: z.object({
       teamName: draftText,
       hometown: draftText,
-      classification: draftText,
-      rosterSize: draftText,
       firstName: draftText,
       lastName: draftText,
       email: draftText,

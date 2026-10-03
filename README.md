@@ -2,7 +2,7 @@
 
 An improved version of [d21softball.org](https://d21softball.org) — a site for D21 softball tournaments, rules, umpire resources, archives, and team registration.
 
-Team registration uses one account-free, three-step TanStack Form. It currently validates and previews entries; submission storage and Stripe checkout will be connected after the Payload CMS v4 backend is built. There is no user dashboard.
+Team registration uses an account-free, three-step TanStack Form and hosted Stripe Checkout. Payload CMS v4 stores original submissions, payment attempts, and verified Stripe-event history. There is no user dashboard.
 
 ## Tech stack
 
@@ -27,7 +27,19 @@ Team registration uses one account-free, three-step TanStack Form. It currently 
 
 ## Registration form
 
-See [the registration implementation notes](docs/registration-form.md) for the reference pattern, submission contract, draft handling, and remaining backend integration.
+See [the registration implementation notes](docs/registration-form.md) for the submission contract, draft handling, and local testing.
+
+See [the registration and payment history model](docs/registration-history.md) for collection fields, access restrictions, accounting validation, and the Stripe handoff.
+
+Copy `.env.example` to `.env` and configure MongoDB, Payload, and Stripe. For local payment confirmation, run:
+
+```bash
+stripe listen --all-snapshot --forward-to http://localhost:3000/api/stripe/webhook
+```
+
+Use that listener's `whsec_...` value as `STRIPE_WEBHOOK_SECRET`, then restart the app. Checkout uses Stripe SDK 23.0.0 and API version `2026-09-30.endive`. Hosted Checkout requires no frontend publishable key or Payload Stripe plugin.
+
+The pnpm patch for `@tanstack/react-start-rsc@0.1.59` keeps React's `use()` call consistent after a suspended Flight stream resolves. Recheck the regression test when upgrading Payload's RSC dependency.
 
 ## Installing Payload v4
 

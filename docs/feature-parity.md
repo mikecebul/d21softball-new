@@ -22,14 +22,14 @@ Verified against the live public website on October 1, 2026. The original page d
 - Fixed archive year validation, which previously discarded seasons before 2016; archive navigation now opens the past season by default.
 - Removed placeholder committee members, unsupported classification appeal/check-in rules and invented historical champions.
 - Completed/full tournaments cannot be preselected through registration URLs or advanced through registration validation.
-- Removed simulated checkout and fabricated payment confirmations. The registration pages clearly state that online checkout is unavailable and provide commissioner contact links.
+- Replaced simulated checkout with hosted Stripe Checkout, private Payload registration/payment history, and signature-verified webhook confirmation.
 - Tournament API cache expires after five minutes so newly posted brackets and team updates can refresh without restarting the server.
 
 ## Remaining integration work
 
-Public-page features are covered. Actual online team registration/payment is not complete: this repository has no Payload CMS backend, persisted registration/order storage, Stripe Checkout session endpoint, payment webhook verification, or receipt-email service. The three-step TanStack form remains a preview, and the success route cannot claim payment or entry confirmation from URL parameters. Live checkout requires the intended Payload backend and Stripe configuration before it can be enabled and verified.
+Public-page features are covered. The three-step registration form now saves submissions and payment attempts in Payload v4 and opens hosted Stripe Checkout. Verified webhooks confirm entries and reconcile refunds/disputes; the success page reads database status. Local sandbox checkout and signed webhook fixtures have been verified. Email delivery, atomic capacity reservations, and tournament/media migration remain unfinished; live operation still requires production configuration and verification.
 
-Account login, signup, password recovery and a user dashboard are intentionally excluded by `AGENTS.md`. The replacement flow is the account-free tournament registration form and eventual Stripe checkout.
+Account login, signup, password recovery and a user dashboard are intentionally excluded by `AGENTS.md`. Entrants use the account-free tournament registration form and Stripe checkout.
 
 The migrated classification/league resources are an explicit source snapshot in `src/lib/original-site-content.ts`; future editorial updates should be managed by Payload. Tournament and Hall of Fame records still come from the original public API. The pitcher PDF retains an older filename despite containing the 2026 list; resource URLs match the actual source.
 

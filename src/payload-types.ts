@@ -71,17 +71,30 @@ export interface Config {
     media: Media;
     folders: Folder;
     tags: Tag;
+    'form-submissions': FormSubmission;
+    payments: Payment;
+    'payment-events': PaymentEvent;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    'form-submissions': {
+      payments: 'payments';
+    };
+    payments: {
+      events: 'payment-events';
+    };
+  };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     folders: FoldersSelect<false> | FoldersSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
+    'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
+    payments: PaymentsSelect<false> | PaymentsSelect<true>;
+    'payment-events': PaymentEventsSelect<false> | PaymentEventsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -197,6 +210,195 @@ export interface Tag {
   _h_titlePath?: string | null;
 }
 /**
+ * Original registrations and their linked payment attempts. Records are written by the server and retained for history.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions".
+ */
+export interface FormSubmission {
+  id: string;
+  /**
+   * Reuse this key when retrying the same submission; create a new key for revised answers.
+   */
+  submissionKey: string;
+  formType: 'tournament-registration';
+  schemaVersion: number;
+  submittedAt: string;
+  source: 'website' | 'staff';
+  status: 'submitted' | 'confirmed' | 'cancelled';
+  confirmedAt?: string | null;
+  cancelledAt?: string | null;
+  cancellationReason?: string | null;
+  /**
+   * Snapshot at submission time; later tournament edits do not rewrite the entry.
+   */
+  tournament: {
+    slug: string;
+    /**
+     * ID in the original tournaments API, until tournaments are migrated into Payload.
+     */
+    sourceId?: string | null;
+    name: string;
+    dateFrom: string;
+    dateTo: string;
+    location: string;
+  };
+  team: {
+    name: string;
+    hometown: string;
+  };
+  contact: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    role: 'Manager' | 'Coach' | 'Player' | 'Other';
+  };
+  notes?: string | null;
+  acknowledgements: {
+    rules: boolean;
+    authorized: boolean;
+    acceptedAt: string;
+    rulesUrl: string;
+    /**
+     * Document revision when formal rule versions become available.
+     */
+    rulesVersion?: string | null;
+  };
+  /**
+   * Calculated by the server from the tournament, never from a browser-supplied price. 60000 cents = $600 USD.
+   */
+  pricing: {
+    amountExpected: number;
+    currency: string;
+  };
+  payments?: {
+    docs?: (string | Payment)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * One record per checkout attempt. Retrying checkout creates another attempt, while Stripe retries reuse the same payment key.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments".
+ */
+export interface Payment {
+  id: string;
+  /**
+   * Persisted Stripe idempotency key for this attempt.
+   */
+  paymentKey: string;
+  submission: string | FormSubmission;
+  attemptNumber: number;
+  provider: 'stripe';
+  /**
+   * False identifies Stripe test/sandbox records.
+   */
+  livemode: boolean;
+  status:
+    'pending' | 'processing' | 'succeeded' | 'failed' | 'expired' | 'cancelled' | 'partially_refunded' | 'refunded';
+  amountExpected: number;
+  amountReceived: number;
+  amountRefunded: number;
+  currency: string;
+  stripe?: {
+    checkoutSessionId?: string | null;
+    paymentIntentId?: string | null;
+    latestChargeId?: string | null;
+    customerId?: string | null;
+    accountId?: string | null;
+    checkoutExpiresAt?: string | null;
+    receiptUrl?: string | null;
+    paymentMethodType?: string | null;
+  };
+  succeededAt?: string | null;
+  failedAt?: string | null;
+  expiredAt?: string | null;
+  cancelledAt?: string | null;
+  failure?: {
+    code?: string | null;
+    declineCode?: string | null;
+    /**
+     * Sanitized diagnostic; never save credentials or full card data.
+     */
+    message?: string | null;
+  };
+  refunds?:
+    | {
+        stripeRefundId: string;
+        amount: number;
+        status: 'pending' | 'requires_action' | 'succeeded' | 'failed' | 'canceled';
+        reason?: string | null;
+        createdAt: string;
+        failureReason?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  dispute?: {
+    stripeDisputeId?: string | null;
+    status?: string | null;
+    reason?: string | null;
+    amount?: number | null;
+    updatedAt?: string | null;
+  };
+  processingLock?: {
+    token?: string | null;
+    until?: string | null;
+  };
+  events?: {
+    docs?: (string | PaymentEvent)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Verified Stripe events and their processing history. No raw webhook bodies or card details are stored.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payment-events".
+ */
+export interface PaymentEvent {
+  id: string;
+  /**
+   * Deduplicate webhook deliveries using the Stripe event ID.
+   */
+  stripeEventId: string;
+  eventType: string;
+  stripeObjectId: string;
+  /**
+   * May be empty for unmatched events; retain them for reconciliation.
+   */
+  payment?: (string | null) | Payment;
+  livemode: boolean;
+  stripeCreatedAt: string;
+  receivedAt: string;
+  signatureVerifiedAt: string;
+  processingStatus: 'received' | 'processed' | 'ignored' | 'failed';
+  processingAttempts: number;
+  lastAttemptAt?: string | null;
+  processedAt?: string | null;
+  /**
+   * Sanitized processing error for retries and reconciliation.
+   */
+  error?: string | null;
+  summary?: {
+    objectType?: string | null;
+    amount?: number | null;
+    currency?: string | null;
+    stripeStatus?: string | null;
+    chargeId?: string | null;
+    refundId?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -235,6 +437,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tags';
         value: string | Tag;
+      } | null)
+    | ({
+        relationTo: 'form-submissions';
+        value: string | FormSubmission;
+      } | null)
+    | ({
+        relationTo: 'payments';
+        value: string | Payment;
+      } | null)
+    | ({
+        relationTo: 'payment-events';
+        value: string | PaymentEvent;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -347,6 +561,164 @@ export interface TagsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions_select".
+ */
+export interface FormSubmissionsSelect<T extends boolean = true> {
+  submissionKey?: T;
+  formType?: T;
+  schemaVersion?: T;
+  submittedAt?: T;
+  source?: T;
+  status?: T;
+  confirmedAt?: T;
+  cancelledAt?: T;
+  cancellationReason?: T;
+  tournament?:
+    | T
+    | {
+        slug?: T;
+        sourceId?: T;
+        name?: T;
+        dateFrom?: T;
+        dateTo?: T;
+        location?: T;
+      };
+  team?:
+    | T
+    | {
+        name?: T;
+        hometown?: T;
+      };
+  contact?:
+    | T
+    | {
+        firstName?: T;
+        lastName?: T;
+        email?: T;
+        phone?: T;
+        role?: T;
+      };
+  notes?: T;
+  acknowledgements?:
+    | T
+    | {
+        rules?: T;
+        authorized?: T;
+        acceptedAt?: T;
+        rulesUrl?: T;
+        rulesVersion?: T;
+      };
+  pricing?:
+    | T
+    | {
+        amountExpected?: T;
+        currency?: T;
+      };
+  payments?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments_select".
+ */
+export interface PaymentsSelect<T extends boolean = true> {
+  paymentKey?: T;
+  submission?: T;
+  attemptNumber?: T;
+  provider?: T;
+  livemode?: T;
+  status?: T;
+  amountExpected?: T;
+  amountReceived?: T;
+  amountRefunded?: T;
+  currency?: T;
+  stripe?:
+    | T
+    | {
+        checkoutSessionId?: T;
+        paymentIntentId?: T;
+        latestChargeId?: T;
+        customerId?: T;
+        accountId?: T;
+        checkoutExpiresAt?: T;
+        receiptUrl?: T;
+        paymentMethodType?: T;
+      };
+  succeededAt?: T;
+  failedAt?: T;
+  expiredAt?: T;
+  cancelledAt?: T;
+  failure?:
+    | T
+    | {
+        code?: T;
+        declineCode?: T;
+        message?: T;
+      };
+  refunds?:
+    | T
+    | {
+        stripeRefundId?: T;
+        amount?: T;
+        status?: T;
+        reason?: T;
+        createdAt?: T;
+        failureReason?: T;
+        id?: T;
+      };
+  dispute?:
+    | T
+    | {
+        stripeDisputeId?: T;
+        status?: T;
+        reason?: T;
+        amount?: T;
+        updatedAt?: T;
+      };
+  processingLock?:
+    | T
+    | {
+        token?: T;
+        until?: T;
+      };
+  events?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payment-events_select".
+ */
+export interface PaymentEventsSelect<T extends boolean = true> {
+  stripeEventId?: T;
+  eventType?: T;
+  stripeObjectId?: T;
+  payment?: T;
+  livemode?: T;
+  stripeCreatedAt?: T;
+  receivedAt?: T;
+  signatureVerifiedAt?: T;
+  processingStatus?: T;
+  processingAttempts?: T;
+  lastAttemptAt?: T;
+  processedAt?: T;
+  error?: T;
+  summary?:
+    | T
+    | {
+        objectType?: T;
+        amount?: T;
+        currency?: T;
+        stripeStatus?: T;
+        chargeId?: T;
+        refundId?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -402,7 +774,7 @@ export interface CollectionsWidget {
 export interface CollectionQueryWidget {
   data?: {
     title?: string | null;
-    relatedCollection: 'users' | 'media' | 'folders' | 'tags';
+    relatedCollection: 'users' | 'media' | 'folders' | 'tags' | 'form-submissions' | 'payments' | 'payment-events';
     where?:
       | {
           [k: string]: unknown;
@@ -424,7 +796,8 @@ export interface CollectionQueryWidget {
  */
 export interface ActivityWidget {
   data?: {
-    excludedCollections?: ('users' | 'media' | 'folders' | 'tags')[] | null;
+    excludedCollections?:
+      ('users' | 'media' | 'folders' | 'tags' | 'form-submissions' | 'payments' | 'payment-events')[] | null;
   };
   width: 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'full';
 }

@@ -8,19 +8,11 @@ import {
   MapPin,
   Phone,
   RotateCcw,
-  ShieldCheck,
-  Trophy,
 } from "lucide-react"
 import { useAppForm } from "@/components/forms/form"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button, buttonVariants } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { canRegister, formatDateRange } from "@/lib/data"
 import {
@@ -42,20 +34,14 @@ const steps = [
   {
     label: "Tournament",
     title: "Choose your weekend",
-    description:
-      "Select an available tournament. Dates, classification, and entry fees are listed below.",
   },
   {
     label: "Team & contact",
     title: "Let’s meet your team",
-    description:
-      "A few details for the bracket and a contact for your tournament entry. All fields are required unless marked optional.",
   },
   {
     label: "Review",
     title: "Check your registration",
-    description:
-      "Review your team and contact details before continuing. You can edit either section.",
   },
 ] as const
 
@@ -64,11 +50,13 @@ export function RegistrationForm({
   preselectedSlug,
   now,
   onCheckout,
+  onRestart,
 }: {
   tournaments: ApiTournament[]
   preselectedSlug?: string
   now?: Date
   onCheckout?: (submission: RegistrationSubmission) => Promise<void>
+  onRestart?: () => void
 }) {
   const [step, setStep] = useState(0)
   const [draftReady, setDraftReady] = useState(false)
@@ -76,7 +64,7 @@ export function RegistrationForm({
   const [canSaveDraft, setCanSaveDraft] = useState(true)
   const [invalid, setInvalid] = useState(false)
   const [checkoutError, setCheckoutError] = useState("")
-  const [checkedValues, setCheckedValues] = useState("")
+  const [checked, setChecked] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
   const previousStep = useRef(0)
@@ -121,14 +109,16 @@ export function RegistrationForm({
       setInvalid(false)
       setCheckoutError("")
       if (!onCheckout) {
-        setCheckedValues(JSON.stringify(value))
+        setChecked(true)
         return
       }
       try {
         await onCheckout(registrationSubmission(schema.parse(value)))
-      } catch {
+      } catch (error) {
         setCheckoutError(
-          "We couldn’t start checkout. Your details are still here. Please try again or contact Scott Kelly."
+          error instanceof Error
+            ? error.message
+            : "We couldn’t start checkout. Please try again."
         )
       }
     },
@@ -193,9 +183,10 @@ export function RegistrationForm({
   }
 
   function startOver() {
+    onRestart?.()
     form.reset(registrationDefaults(), { keepDefaultValues: true })
     setDraftRestored(false)
-    setCheckedValues("")
+    setChecked(false)
     goToStep(0)
     try {
       sessionStorage.removeItem(REGISTRATION_DRAFT_KEY)
@@ -214,25 +205,9 @@ export function RegistrationForm({
     onInvalid: handleInvalid,
     pending,
   }
-  const checked =
-    !!checkedValues && checkedValues === JSON.stringify(values) && step === 2
 
   return (
     <div className="mt-8">
-      {!onCheckout && (
-        <Alert className="mb-6">
-          <CircleAlert />
-          <AlertTitle>Online registration is being prepared</AlertTitle>
-          <AlertDescription>
-            You can prepare and review your details here. Nothing is submitted
-            and no payment is taken.{" "}
-            <a href="mailto:scott@d21softball.org?subject=D21%20tournament%20registration">
-              Contact Scott Kelly
-            </a>{" "}
-            to arrange an entry.
-          </AlertDescription>
-        </Alert>
-      )}
       {preselectedSlug && !validPreselection && (
         <Alert className="mb-6">
           <AlertDescription>
@@ -287,9 +262,6 @@ export function RegistrationForm({
         <div ref={contentRef} className="min-w-0">
           <Card>
             <CardHeader className="px-5 pt-3 sm:px-8">
-              <p className="font-condensed text-xs tracking-[0.18em] text-primary uppercase">
-                Step {step + 1} of {steps.length}
-              </p>
               <CardTitle>
                 <h2
                   ref={headingRef}
@@ -299,7 +271,6 @@ export function RegistrationForm({
                   {steps[step].title}
                 </h2>
               </CardTitle>
-              <CardDescription>{steps[step].description}</CardDescription>
             </CardHeader>
             <CardContent className="px-5 pb-4 sm:px-8">
               {invalid && (
@@ -315,13 +286,11 @@ export function RegistrationForm({
                   <AlertDescription>{checkoutError}</AlertDescription>
                 </Alert>
               )}
-              {checked && (
+              {checked && !onCheckout && step === 2 && (
                 <Alert className="mb-5">
-                  <ShieldCheck />
                   <AlertTitle>Your details are ready</AlertTitle>
                   <AlertDescription>
-                    Everything checks out. Online checkout is still unavailable;
-                    no entry or payment has been submitted.
+                    Checkout is not configured.
                   </AlertDescription>
                 </Alert>
               )}
@@ -343,9 +312,9 @@ export function RegistrationForm({
             >
               {draftReady && canSaveDraft
                 ? draftRestored
-                  ? "Draft restored. Your details stay in this tab for up to 24 hours."
-                  : "Your draft saves in this tab for up to 24 hours. Closing the tab clears it."
-                : "Your details stay here while you complete the form."}
+                  ? "Draft restored."
+                  : "Draft saved in this tab."
+                : ""}
             </p>
             <Button
               type="button"
@@ -361,64 +330,47 @@ export function RegistrationForm({
           aria-label="Registration summary"
           className="flex min-w-0 flex-col gap-5 lg:sticky lg:top-8"
         >
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Trophy className="size-4" /> Your tournament
-              </CardTitle>
-              <CardDescription>
-                {selected
-                  ? "Your selected weekend at a glance."
-                  : "Choose a tournament to see its details and fee."}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {selected ? (
-                <>
-                  <p className="text-base font-semibold">{selected.name}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {selected.class}
-                  </p>
-                  <div className="mt-4 flex flex-col gap-3 text-sm">
-                    <p className="flex items-start gap-2">
-                      <CalendarDays className="mt-0.5 size-4 shrink-0" />
-                      {formatDateRange(selected.date_from, selected.date_to)}
+          {step !== 2 && (
+            <Card>
+              <CardContent>
+                {selected ? (
+                  <>
+                    <p className="text-base font-semibold">{selected.name}</p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {selected.class}
                     </p>
-                    <p className="flex items-start gap-2">
-                      <MapPin className="mt-0.5 size-4 shrink-0" />
-                      {selected.location ||
-                        "Contact the commissioner for venue details."}
+                    <div className="mt-4 flex flex-col gap-3 text-sm">
+                      <p className="flex items-start gap-2">
+                        <CalendarDays className="mt-0.5 size-4 shrink-0" />
+                        {formatDateRange(selected.date_from, selected.date_to)}
+                      </p>
+                      <p className="flex items-start gap-2">
+                        <MapPin className="mt-0.5 size-4 shrink-0" />
+                        {selected.location ||
+                          "Contact the commissioner for venue details."}
+                      </p>
+                    </div>
+                    <Separator className="my-5" />
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="text-muted-foreground">Entry fee</span>
+                      <strong className="text-xl">
+                        {entryFee(selected.price)}
+                      </strong>
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex items-start gap-3 py-2 text-sm text-muted-foreground">
+                    <CalendarDays className="size-5 shrink-0" />
+                    <p>
+                      Dates and entry fees come from the selected tournament.
                     </p>
                   </div>
-                  {values.details.teamName && (
-                    <p className="mt-4 text-sm break-words">
-                      <strong>{values.details.teamName}</strong>
-                      {values.details.hometown &&
-                        ` · ${values.details.hometown}`}
-                    </p>
-                  )}
-                  <Separator className="my-5" />
-                  <div className="flex items-center justify-between gap-4">
-                    <span className="text-muted-foreground">Entry fee</span>
-                    <strong className="text-xl">
-                      {entryFee(selected.price)}
-                    </strong>
-                  </div>
-                </>
-              ) : (
-                <div className="flex items-start gap-3 py-2 text-sm text-muted-foreground">
-                  <CalendarDays className="size-5 shrink-0" />
-                  <p>Dates and entry fees come from the selected tournament.</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                )}
+              </CardContent>
+            </Card>
+          )}
           <div className="px-1 text-sm">
             <p className="font-semibold">Need a hand?</p>
-            <p className="mt-2 leading-relaxed text-muted-foreground">
-              Scott Kelly can help with classification, availability, or
-              registration questions.
-            </p>
             <div className="mt-3 flex flex-col items-start gap-1">
               <a
                 href="mailto:scott@d21softball.org"

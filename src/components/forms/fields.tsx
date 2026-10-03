@@ -160,8 +160,7 @@ export function NotesField() {
   return (
     <Field data-invalid={invalid}>
       <FieldLabel htmlFor={field.name}>
-        Anything we should know?{" "}
-        <span className="text-muted-foreground">(optional)</span>
+        Notes <span className="text-muted-foreground">(optional)</span>
       </FieldLabel>
       <Textarea
         id={field.name}
@@ -169,15 +168,12 @@ export function NotesField() {
         value={field.state.value}
         maxLength={1000}
         rows={3}
-        placeholder="Questions about eligibility or other details for the commissioner."
+        placeholder="Optional details for the commissioner."
         onBlur={field.handleBlur}
         onChange={(event) => field.handleChange(event.target.value)}
         aria-invalid={invalid}
-        aria-describedby={fieldIds(field.name, invalid, true)}
+        aria-describedby={fieldIds(field.name, invalid)}
       />
-      <FieldDescription id={`${field.name}-description`}>
-        Up to 1,000 characters. Please leave out payment card details.
-      </FieldDescription>
       <FieldError id={`${field.name}-error`}>{errors.join(" ")}</FieldError>
     </Field>
   )

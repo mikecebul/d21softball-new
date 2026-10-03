@@ -1,0 +1,28 @@
+diff --git a/dist/esm/createServerComponentFromStream.js b/dist/esm/createServerComponentFromStream.js
+index a160aa3235dfa6b05322fd501c9a3de7cc26ca45..627098af21f4a9cc4b4d1b030c10cf30d3dae9c6 100644
+--- a/dist/esm/createServerComponentFromStream.js
++++ b/dist/esm/createServerComponentFromStream.js
+@@ -51,7 +51,6 @@ function setupStreamDecode(stream, options) {
+ 	const jsPreloads = options?.jsPreloads ? new Set(options.jsPreloads) : void 0;
+ 	const shouldDeferDecode = cssHrefs.size > 0 || !!jsPreloads?.size;
+ 	let cachedTree = void 0;
+-	let cacheReady = false;
+ 	let transformedTreePromise;
+ 	const startDecode = () => {
+ 		if (!transformedTreePromise) {
+@@ -60,7 +59,6 @@ function setupStreamDecode(stream, options) {
+ 					cssHrefs.add(href);
+ 				});
+ 				cachedTree = unwrapRscCssEnvelope(result);
+-				cacheReady = true;
+ 				return cachedTree;
+ 			});
+ 			trackPostProcessPromise(transformedTreePromise);
+@@ -70,7 +68,6 @@ function setupStreamDecode(stream, options) {
+ 	if (!shouldDeferDecode) startDecode();
+ 	const streamWrapper = { createReplayStream: () => stream };
+ 	const getTree = () => {
+-		if (cacheReady) return cachedTree;
+ 		return use(startDecode());
+ 	};
+ 	return {

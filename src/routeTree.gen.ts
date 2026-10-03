@@ -28,6 +28,8 @@ import { Route as TournamentsSlugRouteImport } from './routes/tournaments.$slug'
 import { Route as PayloadAdminIndexRouteImport } from './routes/_payload/admin.index'
 import { Route as PayloadAdminSplatRouteImport } from './routes/_payload/admin.$'
 import { Route as PayloadApiSplatRouteImport } from './routes/_payload/api.$'
+import { Route as ApiRegistrationCheckoutRouteImport } from './routes/api.registration.checkout'
+import { Route as ApiStripeWebhookRouteImport } from './routes/api.stripe.webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -123,6 +125,16 @@ const PayloadApiSplatRoute = PayloadApiSplatRouteImport.update({
   path: '/api/$',
   getParentRoute: () => PayloadRoute,
 } as any)
+const ApiRegistrationCheckoutRoute = ApiRegistrationCheckoutRouteImport.update({
+  id: '/api/registration/checkout',
+  path: '/api/registration/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
+  id: '/api/stripe/webhook',
+  path: '/api/stripe/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -142,6 +154,8 @@ export interface FileRoutesByFullPath {
   '/tournaments/$slug': typeof TournamentsSlugRoute
   '/admin/$': typeof PayloadAdminSplatRoute
   '/api/$': typeof PayloadApiSplatRoute
+  '/api/registration/checkout': typeof ApiRegistrationCheckoutRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/admin/': typeof PayloadAdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -162,6 +176,8 @@ export interface FileRoutesByTo {
   '/tournaments/$slug': typeof TournamentsSlugRoute
   '/admin/$': typeof PayloadAdminSplatRoute
   '/api/$': typeof PayloadApiSplatRoute
+  '/api/registration/checkout': typeof ApiRegistrationCheckoutRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/admin': typeof PayloadAdminIndexRoute
 }
 export interface FileRoutesById {
@@ -184,6 +200,8 @@ export interface FileRoutesById {
   '/tournaments/$slug': typeof TournamentsSlugRoute
   '/_payload/admin/$': typeof PayloadAdminSplatRoute
   '/_payload/api/$': typeof PayloadApiSplatRoute
+  '/api/registration/checkout': typeof ApiRegistrationCheckoutRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/_payload/admin/': typeof PayloadAdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -206,6 +224,8 @@ export interface FileRouteTypes {
     | '/tournaments/$slug'
     | '/admin/$'
     | '/api/$'
+    | '/api/registration/checkout'
+    | '/api/stripe/webhook'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -226,6 +246,8 @@ export interface FileRouteTypes {
     | '/tournaments/$slug'
     | '/admin/$'
     | '/api/$'
+    | '/api/registration/checkout'
+    | '/api/stripe/webhook'
     | '/admin'
   id:
     | '__root__'
@@ -247,6 +269,8 @@ export interface FileRouteTypes {
     | '/tournaments/$slug'
     | '/_payload/admin/$'
     | '/_payload/api/$'
+    | '/api/registration/checkout'
+    | '/api/stripe/webhook'
     | '/_payload/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -264,6 +288,8 @@ export interface RootRouteChildren {
   UmpireRoute: typeof UmpireRoute
   UmpiresRoute: typeof UmpiresRoute
   VisitRoute: typeof VisitRoute
+  ApiRegistrationCheckoutRoute: typeof ApiRegistrationCheckoutRoute
+  ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -401,6 +427,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PayloadApiSplatRouteImport
       parentRoute: typeof PayloadRoute
     }
+    '/api/registration/checkout': {
+      id: '/api/registration/checkout'
+      path: '/api/registration/checkout'
+      fullPath: '/api/registration/checkout'
+      preLoaderRoute: typeof ApiRegistrationCheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/stripe/webhook': {
+      id: '/api/stripe/webhook'
+      path: '/api/stripe/webhook'
+      fullPath: '/api/stripe/webhook'
+      preLoaderRoute: typeof ApiStripeWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -469,6 +509,8 @@ const rootRouteChildren: RootRouteChildren = {
   UmpireRoute: UmpireRoute,
   UmpiresRoute: UmpiresRoute,
   VisitRoute: VisitRoute,
+  ApiRegistrationCheckoutRoute: ApiRegistrationCheckoutRoute,
+  ApiStripeWebhookRoute: ApiStripeWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

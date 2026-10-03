@@ -1,4 +1,8 @@
 import { createFileRoute, Outlet, useMatch } from "@tanstack/react-router"
+import {
+  clearCheckoutRequest,
+  registrationCheckout,
+} from "@/lib/checkout-client"
 import { RegistrationForm } from "@/components/registration/registration-form"
 import { SEASON_YEAR } from "@/lib/data"
 import { createRegistrationPreviewTournament } from "@/lib/registration-preview-tournament"
@@ -49,22 +53,14 @@ function TournamentRegistrationPage() {
         Tournament registration · {SEASON_YEAR} season
       </p>
       <h1 className="mt-2 font-display text-4xl font-semibold uppercase sm:text-5xl">
-        Bring your team to the waterfront.
+        Register your team
       </h1>
-      <p className="mt-3 max-w-2xl leading-relaxed text-muted-foreground">
-        Choose your weekend, tell us about your team, and review your entry. One
-        simple form, no account required.
-      </p>
-      {import.meta.env.DEV && (
-        <p className="mt-3 max-w-2xl text-sm text-muted-foreground">
-          For testing, choose “Test Tournament — Registration Preview.” Its
-          dates and entry fee are samples, and it appears only in development.
-        </p>
-      )}
       <RegistrationForm
         key={tournament ?? "registration"}
         tournaments={tournaments}
         preselectedSlug={tournament}
+        onCheckout={registrationCheckout}
+        onRestart={clearCheckoutRequest}
       />
     </div>
   )
