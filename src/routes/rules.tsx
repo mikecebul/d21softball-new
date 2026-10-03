@@ -1,18 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { SectionHeading } from "@/components/shared";
-import { Download, Ban } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router"
+import { Ban, ExternalLink, FileText } from "lucide-react"
+import { buttonVariants } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { PitcherClassification } from "@/components/pitcher-classification"
+import { SectionHeading } from "@/components/shared"
+import { equipmentResources } from "@/lib/original-site-content"
 
-export const Route = createFileRoute("/rules")({ component: RulesPage });
-
-const committee = [
-  { name: "Scott Kelly", role: "District Commissioner", location: "Charlevoix, MI" },
-  { name: "TBD", role: "Classification Chair", location: "Michigan" },
-  { name: "TBD", role: "Player Representative", location: "Michigan" },
-];
+export const Route = createFileRoute("/rules")({ component: RulesPage })
 
 function RulesPage() {
   return (
@@ -20,70 +14,51 @@ function RulesPage() {
       <SectionHeading
         kicker="Eligibility & equipment"
         title="Rules & classification"
-        lede="Check your pitcher's classification and your bats before you register — both are enforced at check-in."
+        lede="Review pitcher classifications and official equipment resources before your tournament weekend."
       />
-      <div className="mt-8 grid gap-5 lg:grid-cols-2">
-        <Card>
-          <CardContent className="grid gap-3 py-6">
-            <p className="font-display text-2xl font-semibold uppercase">Pitcher classification</p>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              The USA Softball of Michigan pitcher list determines which classes
-              your pitcher is eligible for. Managers are responsible for verifying
-              their staff before tournament weekend.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <Button><Download className="size-4" /> 2026 pitcher list (PDF)</Button>
-              <Button variant="outline">Appeal process</Button>
-            </div>
-            <div className="mt-2 overflow-hidden rounded-lg border">
-              <Table>
-                <TableHeader>
-                  <TableRow><TableHead>Name</TableHead><TableHead>Role</TableHead><TableHead>Location</TableHead></TableRow>
-                </TableHeader>
-                <TableBody>
-                  {committee.map((c) => (
-                    <TableRow key={c.name + c.role}><TableCell className="font-medium">{c.name}</TableCell><TableCell>{c.role}</TableCell><TableCell>{c.location}</TableCell></TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="grid gap-3 py-6">
-            <p className="font-display flex items-center gap-2 text-2xl font-semibold uppercase">
-              <Ban className="size-6 text-destructive" /> Banned & certified bats
-            </p>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              Only USA Softball certified equipment is legal. Umpires check bats
-              at the plate — illegal bats mean the batter is out and ejected per
-              USA Softball rules.
-            </p>
-            <a href="https://www.usasoftball.com/certified-equipment/" target="_blank" rel="noreferrer">
-              <Button variant="outline">Certified equipment list</Button>
+      <Card className="mt-8">
+        <CardHeader>
+          <CardTitle>
+            <h2 className="flex items-center gap-2">
+              <Ban className="size-6 text-primary" aria-hidden="true" />{" "}
+              Certified equipment & bats
+            </h2>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col items-start gap-4">
+          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Use USA Softball's certified-equipment directory for current
+            approved and non-approved bat lists. The historical bat document
+            shared on the original D21 site is also available below.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <a
+              className={buttonVariants()}
+              href={equipmentResources.certifiedUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Current certified equipment{" "}
+              <ExternalLink data-icon="inline-end" />
             </a>
-            <Accordion defaultValue={["appeal"]}>
-              <AccordionItem value="appeal">
-                <AccordionTrigger>How classification appeals work</AccordionTrigger>
-                <AccordionContent>
-                  Submit your appeal in writing to the district commissioner with
-                  season stats and references. The committee reviews before the
-                  next tournament weekend — decisions are final for the season.
-                  (UI preview; full text migrates from the current site.)
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="checkin">
-                <AccordionTrigger>What happens at check-in?</AccordionTrigger>
-                <AccordionContent>
-                  Roster verification, pitcher eligibility check and bat inspection
-                  happen before your first Friday game. Bring photo ID for new
-                  pickups.
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </CardContent>
-        </Card>
-      </div>
+            <a
+              className={buttonVariants({ variant: "outline" })}
+              href={equipmentResources.archivedBatListUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FileText data-icon="inline-start" /> Archived banned bat list
+              (PDF)
+            </a>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            The archived list was last published in{" "}
+            {equipmentResources.archivedBatListYear}; check the official
+            directory for current eligibility.
+          </p>
+        </CardContent>
+      </Card>
+      <PitcherClassification />
     </div>
-  );
+  )
 }

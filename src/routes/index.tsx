@@ -8,6 +8,7 @@ import {
   spotsLeftFor,
 } from "@/lib/data"
 import { getSeasonTournaments } from "@/lib/tournaments"
+import { SeasonNews } from "@/components/season-news"
 
 export const Route = createFileRoute("/")({
   loader: () => getSeasonTournaments({ data: { year: SEASON_YEAR } }),
@@ -257,6 +258,7 @@ function HomePage() {
           ))}
         </div>
       </section>
+      <SeasonNews />
       <section className="commissioner-note guide-container">
         <span className="little-star">✦</span>
         <div>

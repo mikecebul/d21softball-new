@@ -13,9 +13,12 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArchivesRouteImport } from './routes/archives'
 import { Route as HallOfFameRouteImport } from './routes/hall-of-fame'
 import { Route as LocalLeaguesRouteImport } from './routes/local-leagues'
+import { Route as MotelRouteImport } from './routes/motel'
+import { Route as PitcherClassificationRouteImport } from './routes/pitcher-classification'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as RulesRouteImport } from './routes/rules'
 import { Route as TournamentsRouteImport } from './routes/tournaments'
+import { Route as UmpireRouteImport } from './routes/umpire'
 import { Route as UmpiresRouteImport } from './routes/umpires'
 import { Route as VisitRouteImport } from './routes/visit'
 import { Route as ArchivesSlugRouteImport } from './routes/archives.$slug'
@@ -42,6 +45,16 @@ const LocalLeaguesRoute = LocalLeaguesRouteImport.update({
   path: '/local-leagues',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MotelRoute = MotelRouteImport.update({
+  id: '/motel',
+  path: '/motel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PitcherClassificationRoute = PitcherClassificationRouteImport.update({
+  id: '/pitcher-classification',
+  path: '/pitcher-classification',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -55,6 +68,11 @@ const RulesRoute = RulesRouteImport.update({
 const TournamentsRoute = TournamentsRouteImport.update({
   id: '/tournaments',
   path: '/tournaments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UmpireRoute = UmpireRouteImport.update({
+  id: '/umpire',
+  path: '/umpire',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UmpiresRoute = UmpiresRouteImport.update({
@@ -88,9 +106,12 @@ export interface FileRoutesByFullPath {
   '/archives': typeof ArchivesRouteWithChildren
   '/hall-of-fame': typeof HallOfFameRoute
   '/local-leagues': typeof LocalLeaguesRoute
+  '/motel': typeof MotelRoute
+  '/pitcher-classification': typeof PitcherClassificationRoute
   '/register': typeof RegisterRouteWithChildren
   '/rules': typeof RulesRoute
   '/tournaments': typeof TournamentsRouteWithChildren
+  '/umpire': typeof UmpireRoute
   '/umpires': typeof UmpiresRoute
   '/visit': typeof VisitRoute
   '/archives/$slug': typeof ArchivesSlugRoute
@@ -102,9 +123,12 @@ export interface FileRoutesByTo {
   '/archives': typeof ArchivesRouteWithChildren
   '/hall-of-fame': typeof HallOfFameRoute
   '/local-leagues': typeof LocalLeaguesRoute
+  '/motel': typeof MotelRoute
+  '/pitcher-classification': typeof PitcherClassificationRoute
   '/register': typeof RegisterRouteWithChildren
   '/rules': typeof RulesRoute
   '/tournaments': typeof TournamentsRouteWithChildren
+  '/umpire': typeof UmpireRoute
   '/umpires': typeof UmpiresRoute
   '/visit': typeof VisitRoute
   '/archives/$slug': typeof ArchivesSlugRoute
@@ -117,9 +141,12 @@ export interface FileRoutesById {
   '/archives': typeof ArchivesRouteWithChildren
   '/hall-of-fame': typeof HallOfFameRoute
   '/local-leagues': typeof LocalLeaguesRoute
+  '/motel': typeof MotelRoute
+  '/pitcher-classification': typeof PitcherClassificationRoute
   '/register': typeof RegisterRouteWithChildren
   '/rules': typeof RulesRoute
   '/tournaments': typeof TournamentsRouteWithChildren
+  '/umpire': typeof UmpireRoute
   '/umpires': typeof UmpiresRoute
   '/visit': typeof VisitRoute
   '/archives/$slug': typeof ArchivesSlugRoute
@@ -133,9 +160,12 @@ export interface FileRouteTypes {
     | '/archives'
     | '/hall-of-fame'
     | '/local-leagues'
+    | '/motel'
+    | '/pitcher-classification'
     | '/register'
     | '/rules'
     | '/tournaments'
+    | '/umpire'
     | '/umpires'
     | '/visit'
     | '/archives/$slug'
@@ -147,9 +177,12 @@ export interface FileRouteTypes {
     | '/archives'
     | '/hall-of-fame'
     | '/local-leagues'
+    | '/motel'
+    | '/pitcher-classification'
     | '/register'
     | '/rules'
     | '/tournaments'
+    | '/umpire'
     | '/umpires'
     | '/visit'
     | '/archives/$slug'
@@ -161,9 +194,12 @@ export interface FileRouteTypes {
     | '/archives'
     | '/hall-of-fame'
     | '/local-leagues'
+    | '/motel'
+    | '/pitcher-classification'
     | '/register'
     | '/rules'
     | '/tournaments'
+    | '/umpire'
     | '/umpires'
     | '/visit'
     | '/archives/$slug'
@@ -176,9 +212,12 @@ export interface RootRouteChildren {
   ArchivesRoute: typeof ArchivesRouteWithChildren
   HallOfFameRoute: typeof HallOfFameRoute
   LocalLeaguesRoute: typeof LocalLeaguesRoute
+  MotelRoute: typeof MotelRoute
+  PitcherClassificationRoute: typeof PitcherClassificationRoute
   RegisterRoute: typeof RegisterRouteWithChildren
   RulesRoute: typeof RulesRoute
   TournamentsRoute: typeof TournamentsRouteWithChildren
+  UmpireRoute: typeof UmpireRoute
   UmpiresRoute: typeof UmpiresRoute
   VisitRoute: typeof VisitRoute
 }
@@ -213,6 +252,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocalLeaguesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/motel': {
+      id: '/motel'
+      path: '/motel'
+      fullPath: '/motel'
+      preLoaderRoute: typeof MotelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pitcher-classification': {
+      id: '/pitcher-classification'
+      path: '/pitcher-classification'
+      fullPath: '/pitcher-classification'
+      preLoaderRoute: typeof PitcherClassificationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -232,6 +285,13 @@ declare module '@tanstack/react-router' {
       path: '/tournaments'
       fullPath: '/tournaments'
       preLoaderRoute: typeof TournamentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/umpire': {
+      id: '/umpire'
+      path: '/umpire'
+      fullPath: '/umpire'
+      preLoaderRoute: typeof UmpireRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/umpires': {
@@ -313,9 +373,12 @@ const rootRouteChildren: RootRouteChildren = {
   ArchivesRoute: ArchivesRouteWithChildren,
   HallOfFameRoute: HallOfFameRoute,
   LocalLeaguesRoute: LocalLeaguesRoute,
+  MotelRoute: MotelRoute,
+  PitcherClassificationRoute: PitcherClassificationRoute,
   RegisterRoute: RegisterRouteWithChildren,
   RulesRoute: RulesRoute,
   TournamentsRoute: TournamentsRouteWithChildren,
+  UmpireRoute: UmpireRoute,
   UmpiresRoute: UmpiresRoute,
   VisitRoute: VisitRoute,
 }

@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/drawer"
 import {
   ChevronRight,
+  Archive,
   ClipboardList,
   Compass,
   Flag,
@@ -26,11 +27,12 @@ import {
 
 const nav = [
   { to: "/tournaments", label: "Tournaments", icon: Trophy },
-  { to: "/local-leagues", label: "Local Leagues", icon: Users },
+  { to: "/archives", label: "Archives", icon: Archive },
+  { to: "/local-leagues", label: "Leagues", icon: Users },
   { to: "/hall-of-fame", label: "Hall of Fame", icon: Medal },
   { to: "/visit", label: "Visit", icon: Compass },
   { to: "/umpires", label: "Umpires", icon: Flag },
-  { to: "/rules", label: "Rules", icon: ClipboardList },
+  { to: "/pitcher-classification", label: "Pitchers", icon: ClipboardList },
 ]
 
 const contactBar = {
@@ -63,7 +65,7 @@ export function SiteHeader() {
       </div>
       {/* main bar */}
       <div className="main-navigation border-b bg-[var(--paper)]/95 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3">
           <Link
             to="/"
             aria-label="D21 Softball home"
@@ -85,12 +87,12 @@ export function SiteHeader() {
               </span>
             </span>
           </Link>
-          <nav className="hidden items-center gap-1 lg:flex">
+          <nav aria-label="Main" className="hidden items-center gap-1 xl:flex">
             {nav.map((n) => (
               <Link
                 key={n.to}
                 to={n.to}
-                className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-muted hover:text-foreground"
+                className="rounded-md px-2 py-2 text-sm font-medium text-foreground/80 hover:bg-muted hover:text-foreground"
                 activeProps={{ className: "bg-muted text-foreground" }}
               >
                 {n.label}
@@ -101,7 +103,7 @@ export function SiteHeader() {
             </Link>
           </nav>
           <button
-            className="grid size-10 place-items-center rounded-md border lg:hidden"
+            className="grid size-10 place-items-center rounded-md border xl:hidden"
             onClick={() => setOpen(true)}
             aria-label="Open menu"
           >

@@ -2,11 +2,12 @@
 
 An improved version of [d21softball.org](https://d21softball.org) — a site for D21 softball tournaments, rules, umpire resources, archives, and team registration.
 
-Teams register for tournaments through a multi-step form with Stripe checkout. There is no user dashboard. The backend is planned on Payload CMS v4.
+Team registration uses one account-free, three-step TanStack Form. It currently validates and previews entries; submission storage and Stripe checkout will be connected after the Payload CMS v4 backend is built. There is no user dashboard.
 
 ## Tech stack
 
 - [TanStack Start](https://tanstack.com/start) (React, TypeScript, file-based routing)
+- [TanStack Form](https://tanstack.com/form) with Zod validation
 - [Tailwind CSS v4](https://tailwindcss.com)
 - [shadcn/ui](https://ui.shadcn.com) components in `src/components/ui`
 - Vite + pnpm
@@ -21,6 +22,11 @@ Teams register for tournaments through a multi-step form with Stripe checkout. T
 
 - Start the app with `pnpm dev` (port 3000).
 - Stop it with `pnpm dev:stop`. Temporary dev servers must be terminated before finishing work; do not kill unrelated Node/Vite processes.
+- If Vite uses another port because 3000 is occupied, stop only that preview with `D21_DEV_PORT=3001 pnpm dev:stop` (substitute its actual port).
+
+## Registration form
+
+See [the registration implementation notes](docs/registration-form.md) for the reference pattern, submission contract, draft handling, and remaining backend integration.
 
 ## Scripts
 

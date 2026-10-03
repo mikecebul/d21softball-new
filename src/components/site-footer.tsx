@@ -78,8 +78,14 @@ export function SiteFooter() {
             Know before you go
           </p>
           <div className="mt-3 grid gap-2 text-sm">
+            <Link
+              to="/pitcher-classification"
+              className="text-white/75 hover:text-white"
+            >
+              Pitcher list & committee
+            </Link>
             <Link to="/rules" className="text-white/75 hover:text-white">
-              Pitcher classification & bats
+              Rules & certified equipment
             </Link>
             <Link to="/umpires" className="text-white/75 hover:text-white">
               Umpire registration
