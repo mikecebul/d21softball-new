@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PayloadRouteImport } from './routes/_payload'
 import { Route as ArchivesRouteImport } from './routes/archives'
 import { Route as HallOfFameRouteImport } from './routes/hall-of-fame'
 import { Route as LocalLeaguesRouteImport } from './routes/local-leagues'
@@ -24,10 +25,17 @@ import { Route as VisitRouteImport } from './routes/visit'
 import { Route as ArchivesSlugRouteImport } from './routes/archives.$slug'
 import { Route as RegisterSuccessRouteImport } from './routes/register.success'
 import { Route as TournamentsSlugRouteImport } from './routes/tournaments.$slug'
+import { Route as PayloadAdminIndexRouteImport } from './routes/_payload/admin.index'
+import { Route as PayloadAdminSplatRouteImport } from './routes/_payload/admin.$'
+import { Route as PayloadApiSplatRouteImport } from './routes/_payload/api.$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PayloadRoute = PayloadRouteImport.update({
+  id: '/_payload',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ArchivesRoute = ArchivesRouteImport.update({
@@ -100,6 +108,21 @@ const TournamentsSlugRoute = TournamentsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => TournamentsRoute,
 } as any)
+const PayloadAdminIndexRoute = PayloadAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => PayloadRoute,
+} as any)
+const PayloadAdminSplatRoute = PayloadAdminSplatRouteImport.update({
+  id: '/admin/$',
+  path: '/admin/$',
+  getParentRoute: () => PayloadRoute,
+} as any)
+const PayloadApiSplatRoute = PayloadApiSplatRouteImport.update({
+  id: '/api/$',
+  path: '/api/$',
+  getParentRoute: () => PayloadRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -117,6 +140,9 @@ export interface FileRoutesByFullPath {
   '/archives/$slug': typeof ArchivesSlugRoute
   '/register/success': typeof RegisterSuccessRoute
   '/tournaments/$slug': typeof TournamentsSlugRoute
+  '/admin/$': typeof PayloadAdminSplatRoute
+  '/api/$': typeof PayloadApiSplatRoute
+  '/admin/': typeof PayloadAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -134,10 +160,14 @@ export interface FileRoutesByTo {
   '/archives/$slug': typeof ArchivesSlugRoute
   '/register/success': typeof RegisterSuccessRoute
   '/tournaments/$slug': typeof TournamentsSlugRoute
+  '/admin/$': typeof PayloadAdminSplatRoute
+  '/api/$': typeof PayloadApiSplatRoute
+  '/admin': typeof PayloadAdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_payload': typeof PayloadRouteWithChildren
   '/archives': typeof ArchivesRouteWithChildren
   '/hall-of-fame': typeof HallOfFameRoute
   '/local-leagues': typeof LocalLeaguesRoute
@@ -152,6 +182,9 @@ export interface FileRoutesById {
   '/archives/$slug': typeof ArchivesSlugRoute
   '/register/success': typeof RegisterSuccessRoute
   '/tournaments/$slug': typeof TournamentsSlugRoute
+  '/_payload/admin/$': typeof PayloadAdminSplatRoute
+  '/_payload/api/$': typeof PayloadApiSplatRoute
+  '/_payload/admin/': typeof PayloadAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -171,6 +204,9 @@ export interface FileRouteTypes {
     | '/archives/$slug'
     | '/register/success'
     | '/tournaments/$slug'
+    | '/admin/$'
+    | '/api/$'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -188,9 +224,13 @@ export interface FileRouteTypes {
     | '/archives/$slug'
     | '/register/success'
     | '/tournaments/$slug'
+    | '/admin/$'
+    | '/api/$'
+    | '/admin'
   id:
     | '__root__'
     | '/'
+    | '/_payload'
     | '/archives'
     | '/hall-of-fame'
     | '/local-leagues'
@@ -205,10 +245,14 @@ export interface FileRouteTypes {
     | '/archives/$slug'
     | '/register/success'
     | '/tournaments/$slug'
+    | '/_payload/admin/$'
+    | '/_payload/api/$'
+    | '/_payload/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  PayloadRoute: typeof PayloadRouteWithChildren
   ArchivesRoute: typeof ArchivesRouteWithChildren
   HallOfFameRoute: typeof HallOfFameRoute
   LocalLeaguesRoute: typeof LocalLeaguesRoute
@@ -229,6 +273,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_payload': {
+      id: '/_payload'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof PayloadRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/archives': {
@@ -329,8 +380,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TournamentsSlugRouteImport
       parentRoute: typeof TournamentsRoute
     }
+    '/_payload/admin/': {
+      id: '/_payload/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof PayloadAdminIndexRouteImport
+      parentRoute: typeof PayloadRoute
+    }
+    '/_payload/admin/$': {
+      id: '/_payload/admin/$'
+      path: '/admin/$'
+      fullPath: '/admin/$'
+      preLoaderRoute: typeof PayloadAdminSplatRouteImport
+      parentRoute: typeof PayloadRoute
+    }
+    '/_payload/api/$': {
+      id: '/_payload/api/$'
+      path: '/api/$'
+      fullPath: '/api/$'
+      preLoaderRoute: typeof PayloadApiSplatRouteImport
+      parentRoute: typeof PayloadRoute
+    }
   }
 }
+
+interface PayloadRouteChildren {
+  PayloadAdminSplatRoute: typeof PayloadAdminSplatRoute
+  PayloadApiSplatRoute: typeof PayloadApiSplatRoute
+  PayloadAdminIndexRoute: typeof PayloadAdminIndexRoute
+}
+
+const PayloadRouteChildren: PayloadRouteChildren = {
+  PayloadAdminSplatRoute: PayloadAdminSplatRoute,
+  PayloadApiSplatRoute: PayloadApiSplatRoute,
+  PayloadAdminIndexRoute: PayloadAdminIndexRoute,
+}
+
+const PayloadRouteWithChildren =
+  PayloadRoute._addFileChildren(PayloadRouteChildren)
 
 interface ArchivesRouteChildren {
   ArchivesSlugRoute: typeof ArchivesSlugRoute
@@ -370,6 +457,7 @@ const TournamentsRouteWithChildren = TournamentsRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  PayloadRoute: PayloadRouteWithChildren,
   ArchivesRoute: ArchivesRouteWithChildren,
   HallOfFameRoute: HallOfFameRoute,
   LocalLeaguesRoute: LocalLeaguesRoute,
